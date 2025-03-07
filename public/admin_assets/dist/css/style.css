@@ -1,0 +1,79 @@
+:root {
+    --white: #fff;
+    --black: #171717;
+    --color1: #F9DCBE;
+    --color2: #450A20;
+    --color3: #A43861;
+}
+
+.bg-cream {
+    background-color: var(--color1) !important;
+}
+
+.btn-brown {
+    background-color: var(--color2);
+    color: var(--white);
+}
+
+.bg-brown {
+    background-color: var(--color2) !important;
+    color: var(--white) !important;
+}
+
+.btn-brown:hover {
+    background-color: var(--color3);
+    color: var(--white);
+}
+
+.card-outline-cream {
+    border-top: 2px solid var(--color1) !important;
+}
+
+.card-outline-brown {
+    border-top: 3px solid var(--color2) !important;
+}
+.sidebar-dark-brown .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-brown .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: var(--color2) !important;
+    color: var(--white) !important;
+}
+.error{
+    color: red;
+    font-size: 12px;
+}
+
+
+.product-image-box {
+    background: #fff;
+    min-height: 200px;
+    width: 100%;
+}
+
+#product-image-box img{
+    width: 100%;
+    object-fit: cover;
+}
+#product-gallery-box .preview-image{
+    display: inline-block;
+    object-fit: cover;
+    position: relative;
+}
+#product-gallery-box .preview-image img{
+    width: 100%;
+    max-height: 80px;
+    object-fit: cover;
+}
+#product-gallery-box .preview-image .delete-btn{
+    position: absolute;
+    right: 0;
+    font-size: 10px;
+}
+.dataTable .product-image{
+    width: 40px;
+    margin: auto;
+}
+.dataTable .product-image img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
