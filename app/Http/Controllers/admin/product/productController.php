@@ -50,7 +50,7 @@ class productController extends Controller
                 'product_short_description' => $request->input('short_description'),
                 'product_description' => $request->input('description'),
                 'product_image' => $path,
-                'created_by' => Session::get('user')->username,
+                'created_by' => Session::get('admin')->username,
                 'status' => $request->input('status')
             ];
             if ($insert = DB::table('t_products')->insertGetId($data)) {

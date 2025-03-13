@@ -93,7 +93,7 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Siddharth Gupta</a>
+                        <a href="#" class="d-block">{{Session::get('admin')->name}}</a>
                     </div>
                 </div>
 

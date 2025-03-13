@@ -4,30 +4,49 @@ use App\Http\Controllers\admin\category\categoryController;
 use App\Http\Controllers\admin\homeController;
 use App\Http\Controllers\admin\loginController;
 use App\Http\Controllers\admin\product\productController;
+use App\Http\Controllers\main\homeController as MainHomeController;
 use App\Http\Controllers\main\productController as MainProductController;
+use App\Http\Controllers\main\userSignupSigninControler;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('main/index');
-});
+Route::get('/',[MainHomeController::class,"index"])->name("home");
 Route::get('/about', function () {
     return view('main/about');
 });
 Route::get('/contact', function () {
     return view('main/contact');
 });
+
+
 Route::get("shop", [MainProductController::class, "shop"])->name("shop");
 Route::get('/blogs', function () {
     return view('main/blogs');
 });
 
 
+
+Route::get('my-account', [userSignupSigninControler::class,"myAccount"])->name("my-account");
+
+Route::get('login', [userSignupSigninControler::class,"login"])->name("login");
+Route::get('logout', [userSignupSigninControler::class,"logout"])->name("logout");
+Route::post("loginProcess",[userSignupSigninControler::class,"loginProcess"])->name("loginProcess");
+
+Route::get("signup",[userSignupSigninControler::class,"signup"])->name("signup");
+Route::post("signupProcess",[userSignupSigninControler::class,"signupProcess"])->name("signupProcess");
+
+
+
+
+
+
+
+
+
 Route::get("admin/login", [loginController::class, "login"])->name('admin.login');
 Route::get('/admin/logout', [loginController::class, "logout"])->name("admin.logout");
 Route::post('/admin/VerifyLogin', [loginController::class, "VerifyLogin"])->name("admin.VerifyLogin");
 
-
-Route::middleware(['login'])->group(function () {
+Route::middleware(['adminCheck'])->group(function () {
 
     Route::get('/admin', [homeController::class, "index"])->name("admin.home");
 

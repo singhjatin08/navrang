@@ -2,6 +2,9 @@
 <html class="no-js" lang="en">
 
 <head>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Navrang</title>
@@ -31,6 +34,14 @@
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="public/assets/css/style.min.css" />
+    <link rel="stylesheet" href="public/assets/css/new-style.css" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- SweetAlert2 -->
+    <link href="{{url('public/admin_assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}" rel="stylesheet">
+    <script src="{{url('public/admin_assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
 </head>
 
 
@@ -81,7 +92,7 @@
                             <div class="header-mid-meta">
                                 <ul class="header-mid-meta__item justify-content-end">
                                     <li>
-                                        <a href="my-account.html" aria-label="My Account">
+                                        <a href="{{route('my-account')}}" aria-label="My Account">
                                             <i class="lastudioicon-single-01-2"></i>
                                         </a>
                                     </li>
@@ -129,7 +140,7 @@
                         </li>
                         <li>
                             <a href="{{url('about')}}"><span>About us</span></a>
-                        </li> 
+                        </li>
                         <li class="position-static">
                             <a href="{{url('shop')}}">
                                 <span>Shop</span>
@@ -211,8 +222,7 @@
                         </li>
                         <li>
                             <a href="{{url('contact')}}"><span>Contact Us</span></a>
-                        </li>
-
+                        </li> 
                     </ul>
                     <!-- Menu Item List End -->
                 </nav>
@@ -530,7 +540,7 @@
                     <li>
                         <a href="{{url('/')}}">
                             Home
-                        </a> 
+                        </a>
                     </li>
                     <li>
                         <a href="{{url('/about')}}">
@@ -539,7 +549,7 @@
                     </li>
                     <li>
                         <a href="{{url('/shop')}}">
-                            Shop 
+                            Shop
                         </a>
                     </li>
                     <li>

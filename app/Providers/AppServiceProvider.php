@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::middlewareGroup('login', [
+        Route::middlewareGroup('adminCheck', [
             loginMiddleware::class,
         ]);
     }

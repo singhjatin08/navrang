@@ -7,7 +7,7 @@
         <div class="container-fluid custom-container">
             <div class="breadcrumb-wrapper text-center">
                 <h2 class="breadcrumb-wrapper__title">
-                    Shop 04 Columns
+                    Shop
                 </h2>
                 <ul class="breadcrumb-wrapper__items justify-content-center">
                     <li><a href="index.html">Home</a></li>
@@ -418,50 +418,53 @@
             <!-- Shop Wrapper Start -->
             <div class="shop-wrapper">
                 <div class="row">
-                    <?php
-                    foreach ($products as $product) {
-                    ?>
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <!-- Single product Start -->
-                            <div class="single-product js-scroll ShortFadeInUp">
-                                <div class="single-product__thumbnail">
-                                    <div class="single-product__thumbnail--meta-3">
-                                        <a href="#" data-bs-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to wishlist" data-bs-custom-class="p-meta-tooltip" aria-label="wishlist"><i
-                                                class="lastudioicon-heart-2"></i></a>
-                                    </div>
-                                    <div class="single-product__thumbnail--badge onsale">
-                                        Sale
-                                    </div>
-                                    <div class="single-product__thumbnail--holder">
-                                        <a href="product-single.html">
-                                            <img src="{{url('')}}/{{$product->product_image}}" alt="Product" width="344" height="370" />
-                                        </a>
-                                    </div>
-                                    <div class="single-product__thumbnail--meta-2">
-                                        <a href="#" data-bs-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart" data-bs-custom-class="p-meta-tooltip" aria-label="cart"><i
-                                                class="lastudioicon-shopping-cart-3"></i></a> 
-                                    </div>
+                    @foreach($products as $product)
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <!-- Single product Start -->
+                        <div class="single-product js-scroll ShortFadeInUp">
+                            <div class="single-product__thumbnail">
+                                <div class="single-product__thumbnail--meta-3">
+                                    <a href="javascript:void(0);" onclick=""
+                                        data-bs-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to wishlist"
+                                        data-bs-custom-class="p-meta-tooltip" aria-label="wishlist" id="wishlist-btn-{{ $product->id }}">
+                                        <i class="lastudioicon-heart-2"></i>
+                                    </a>
                                 </div>
-                                <div class="single-product__info text-center">
-                                    <div class="single-product__info--tags">
-                                        <a href="#">{{$product->category_name}}</a>
-                                    </div>
-                                    <h3 class="single-product__info--title">
-                                        <a href="product-single.html">
-                                            {{$product->product_title}}
-                                        </a>
-                                    </h3>
-                                    <div class="single-product__info--price">₹
-                                        <del>{{$product->product_price}}</del>
-                                        <ins>{{$product->product_sale_price}}</ins>
-                                    </div>
+                                @if (!empty($product->product_sale_price))
+                                <div class="single-product__thumbnail--badge onsale">
+                                    Sale
+                                </div>
+                                @endif
+
+
+                                <div class="single-product__thumbnail--holder">
+                                    <a href="product-single.html">
+                                        <img src="{{url('')}}/{{$product->product_image}}" alt="Product" width="344" height="370" />
+                                    </a>
+                                </div>
+                                <div class="single-product__thumbnail--meta-2">
+                                    <a href="#" data-bs-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart" data-bs-custom-class="p-meta-tooltip" aria-label="cart"><i
+                                            class="lastudioicon-shopping-cart-3"></i></a>
                                 </div>
                             </div>
-                            <!-- Single product End -->
+                            <div class="single-product__info text-center">
+                                <div class="single-product__info--tags">
+                                    <a href="#">{{$product->category_name}}</a>
+                                </div>
+                                <h3 class="single-product__info--title">
+                                    <a href="product-single.html">
+                                        {{$product->product_title}}
+                                    </a>
+                                </h3>
+                                <div class="single-product__info--price">₹
+                                    <del>{{$product->product_price}}</del>
+                                    <ins>{{$product->product_sale_price}}</ins>
+                                </div>
+                            </div>
                         </div>
-                    <?php
-                    }
-                    ?>
+                        <!-- Single product End -->
+                    </div>
+                    @endforeach
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <!-- Single product Start -->
                         <div class="single-product js-scroll ShortFadeInUp">

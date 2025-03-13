@@ -1,0 +1,41 @@
+:root{
+    --color1:#F8ECE5;
+    --color2:#440A20;
+    --color3:#F9DCBE;
+}
+
+.error{
+    color: red;
+    font-size: 12px;
+}
+.btn-theme-1{
+    background: var(--color3) !important;
+    color: var(--color2) !important;
+    border-radius: 5px;
+    padding: 10px 40px;
+}
+.btn-theme-1:hover{
+    background-color: var(--color2) !important;
+    color: var(--color1) !important;
+}
+.header__top{
+background-color: var(--color3);
+}
+.header__top--wrapper p{
+    color: var(--color2);
+}
+.menu-items-list--dark>li>a{
+    color: var(--color2);
+}
+
+.special-offer-content__btn{
+    background-color: var(--color2);
+}
+.special-offer-content__btn:hover{
+    background-color: var(--color3);
+    color: var(--color2);
+    border-color: var(--color2);
+}
+.header-mid-meta__item li a .badge, .header-mid-meta__item li button .badge{
+    background-color: var(--color2);
+}

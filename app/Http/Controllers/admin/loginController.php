@@ -12,7 +12,7 @@ class loginController extends Controller
 {
     public function login()
     {
-        if (Session::has('user')) {
+        if (Session::has('admin')) {
             return redirect()->route("admin.home");
         }
         return view("admin/login");
@@ -40,7 +40,7 @@ class loginController extends Controller
             if ($user) {
                 if ($user->password == $password) {
                     if ($user->status == 1) {
-                        Session::put('user', $user);
+                        Session::put('admin', $user);
                         $result = [
                             "status" => "success",
                             "message" => "Login Successful!",
@@ -82,7 +82,7 @@ class loginController extends Controller
 
     public function logout()
     {
-        Session::forget('user');
+        Session::forget('admin');
         return redirect()->route('admin.home');
     }
 
