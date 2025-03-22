@@ -24,17 +24,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&amp;family=Playfair+Display:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
 
     <!-- Vendor CSS (Bootstrap & Icon Font) -->
-    <link rel="stylesheet" href="public/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="public/assets/css/lastudioicon.css" />
+    <link rel="stylesheet" href="{{url('public/assets/css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/css/lastudioicon.css')}}" />
 
     <!-- Plugins CSS (All Plugins Files) -->
-    <link rel="stylesheet" href="public/assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="public/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="public/assets/css/nice-select2.css" />
+    <link rel="stylesheet" href="{{url('public/assets/css/swiper-bundle.min.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/css/glightbox.min.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/css/nice-select2.css')}}" />
 
     <!-- Style CSS -->
-    <link rel="stylesheet" href="public/assets/css/style.min.css" />
-    <link rel="stylesheet" href="public/assets/css/new-style.css" />
+    <link rel="stylesheet" href="{{url('public/assets/css/style.min.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/css/new-style.css')}}" />
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     
@@ -81,7 +81,7 @@
                         <!-- Header Middle Logo Start -->
                         <div class="header-mid-logo text-md-center">
                             <a href="{{url('/')}}">
-                                <img src="public/assets/images/logo.png" alt="Logo" width="200" height="38" />
+                                <img src="{{url('public/assets/images/logo.png')}}" alt="Logo" width="200" height="38" />
                             </a>
                         </div>
                         <!-- Header Middle Logo End -->
@@ -709,7 +709,7 @@
                     <!-- Footer About Start -->
                     <div class="footer-about text-xxl-start text-center mx-xxl-0 mx-auto">
                         <a class="logo justify-content-xxl-start justify-content-center" href="#">
-                            <img src="public/assets/images/logo.png" alt="Logo" width="110" height="32" loading="lazy" />
+                            <img src="{{url('public/assets/images/logo.png')}}" alt="Logo" width="110" height="32" loading="lazy" />
                         </a>
                         <p>Proin volutpat vitae libero at tincidunt. Maecenas</p>
                     </div>
@@ -961,16 +961,16 @@
     <!-- JS Vendor, Plugins & Activation Script Files -->
 
     <!-- Bootstrap JS -->
-    <script src="public/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="{{url('public/assets/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Plugins JS -->
-    <script src="public/assets/js/swiper-bundle.min.js"></script>
-    <script src="public/assets/js/masonry.pkgd.min.js"></script>
-    <script src="public/assets/js/glightbox.min.js"></script>
-    <script src="public/assets/js/nice-select2.js"></script>
+    <script src="{{url('public/assets/js/swiper-bundle.min.js')}}"></script>
+    <script src="{{url('public/assets/js/masonry.pkgd.min.js')}}"></script>
+    <script src="{{url('public/assets/js/glightbox.min.js')}}"></script>
+    <script src="{{url('public/assets/js/nice-select2.js')}}"></script>
 
     <!-- Activation JS -->
-    <script src="public/assets/js/main.js"></script>
+    <script src="{{url('public/assets/js/main.js')}}"></script>
 
 </body>
 

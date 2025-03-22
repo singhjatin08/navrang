@@ -438,7 +438,7 @@
 
 
                                 <div class="single-product__thumbnail--holder">
-                                    <a href="product-single.html">
+                                    <a href="{{route('product-details',$product->product_id)}}">
                                         <img src="{{url('')}}/{{$product->product_image}}" alt="Product" width="344" height="370" />
                                     </a>
                                 </div>
@@ -452,7 +452,7 @@
                                     <a href="#">{{$product->category_name}}</a>
                                 </div>
                                 <h3 class="single-product__info--title">
-                                    <a href="product-single.html">
+                                    <a href="{{route('product-details',$product->product_id)}}">
                                         {{$product->product_title}}
                                     </a>
                                 </h3>

@@ -64,9 +64,11 @@ class productController extends Controller
 
                         $filePath = $file->move('public/products/' . $p_id, $imageName);
                         productGalleryModel::create([
+                            'type'=>"image",
                             'product_id' => $p_id,
                             'file_path' => $filePath,
                             'created_by' => Session::get('user')->username,
+                            'status'=>1,
                         ]);
                     }
                 }
@@ -136,7 +138,7 @@ class productController extends Controller
             'product_sale_price' => $request->input('sale_price'),
             'product_short_description' => $request->input('short_description'),
             'product_description' => $request->input('description'),
-            'created_by' => Session::get('user')->username,
+            'created_by' => Session::get('admin')->username,
             'status' => $request->input('status')
         ];
 
@@ -174,9 +176,11 @@ class productController extends Controller
                     ]);
                 }
                 productGalleryModel::create([
+                    'type'=>"image",
                     'product_id' => $product->product_id,
                     'file_path' => $filePath,
-                    'created_by' => Session::get('user')->username,
+                    'created_by' => Session::get('admin')->username,
+                    'status'=>1,
                 ]);
             }
         }

@@ -1,4 +1,4 @@
-@extends("main/include/layout")
+@extends("main.include.layout")
 @section("content")
 
 <div class="bg-light">
@@ -159,7 +159,7 @@
                 contentType: false,
                 success: function(data) {
                     //alert(data.status);
-                    //console.log(data)
+                    console.log(data)
                     if (data.status == 'success') {
                         Swal.fire({
                             icon: data.status,

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\main;
 
 use App\Http\Controllers\Controller;
+use App\Models\cartModel;
 use App\Models\user\userModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -12,11 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class userSignupSigninControler extends Controller
 {
 
-    public function myAccount(){
+    public function myAccount()
+    {
         return view("main/my-account");
     }
 
-    public function signup(){
+    public function signup()
+    {
         return view("main/signup");
     }
     public function signupProcess(Request $request)
@@ -88,7 +92,8 @@ class userSignupSigninControler extends Controller
         }
     }
 
-    public function login(){
+    public function login()
+    {
         return view("main/login");
     }
     public function loginProcess(Request $request)
@@ -114,10 +119,21 @@ class userSignupSigninControler extends Controller
                 if ($user->password == md5($password)) {
                     if ($user->status == 1) {
                         Session::put('user', $user);
+                        $cookieCart = json_decode(Cookie::get('cart', '[]'), true);
+
+                        foreach ($cookieCart as $item) {
+                            cartModel::create([
+                                'username' => Session::get('user')->username,
+                                'product_id' => $item['product_id'],
+                                'quantity' => $item['quantity'],
+                            ]);
+                        }
+                        Cookie::queue(Cookie::forget('cart'));
+
                         $result = [
                             "status" => "success",
                             "message" => "Login Successful!",
-                            "user" => $user->username
+                            "cart" => $cookieCart
                         ];
                         return response()->json($result);
                     } else {

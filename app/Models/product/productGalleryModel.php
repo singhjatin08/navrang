@@ -10,8 +10,10 @@ class productGalleryModel extends Model
     public $timestamps = true;
     protected $fillable = [
         'product_id',
+        'type',
         'file_path',
         'created_by',
+        'status'
     ];
     protected $dates = [
         'created_at',
