@@ -3,6 +3,7 @@
 namespace App\Models\user;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class userModel extends Model
 {
@@ -21,4 +22,10 @@ class userModel extends Model
         'created_at',
         'updated_at',
     ];
+
+
+    public function getAllUsers(){
+        $users = DB::table('t_users')->get();
+        return $users;
+    }
 }

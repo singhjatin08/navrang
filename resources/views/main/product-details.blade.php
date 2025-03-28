@@ -1224,36 +1224,4 @@
     </main>
 
 
-
-    <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $('.add-to-cart').click(function() {
-                var productId = $(this).data('product-id');
-                var quantity = 1;
-
-                var data = {
-                    'product_id': productId,
-                    'quantity': quantity
-                };
-                $.ajax({
-                    url: '{{ route('cart.add') }}',
-                    method: 'POST',
-                    data: data,
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert('Something went wrong!');
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

@@ -2,7 +2,9 @@
 <html class="no-js" lang="en">
 
 <head>
-
+    <script>
+        window.appUrl = "{{ config('app.url') }}";
+    </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta charset="utf-8" />
@@ -21,26 +23,30 @@
     <!-- Font CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&amp;family=Playfair+Display:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&amp;family=Playfair+Display:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
 
     <!-- Vendor CSS (Bootstrap & Icon Font) -->
-    <link rel="stylesheet" href="{{url('public/assets/css/bootstrap.min.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/css/lastudioicon.css')}}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/lastudioicon.css') }}" />
 
     <!-- Plugins CSS (All Plugins Files) -->
-    <link rel="stylesheet" href="{{url('public/assets/css/swiper-bundle.min.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/css/glightbox.min.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/css/nice-select2.css')}}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/glightbox.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/nice-select2.css') }}" />
 
     <!-- Style CSS -->
-    <link rel="stylesheet" href="{{url('public/assets/css/style.min.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/css/new-style.css')}}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/new-style.css') }}" />
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!-- SweetAlert2 -->
-    <link href="{{url('public/admin_assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}" rel="stylesheet">
-    <script src="{{url('public/admin_assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <link href="{{ url('public/admin_assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}"
+        rel="stylesheet">
+    <script src="{{ url('public/admin_assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
 </head>
 
@@ -80,8 +86,9 @@
                     <div class="col-md-4 col-5">
                         <!-- Header Middle Logo Start -->
                         <div class="header-mid-logo text-md-center">
-                            <a href="{{url('/')}}">
-                                <img src="{{url('public/assets/images/logo.png')}}" alt="Logo" width="200" height="38" />
+                            <a href="{{ url('/') }}">
+                                <img src="{{ url('public/assets/images/logo.png') }}" alt="Logo" width="200"
+                                    height="38" />
                             </a>
                         </div>
                         <!-- Header Middle Logo End -->
@@ -92,7 +99,7 @@
                             <div class="header-mid-meta">
                                 <ul class="header-mid-meta__item justify-content-end">
                                     <li>
-                                        <a href="{{route('my-account')}}" aria-label="My Account">
+                                        <a href="{{ route('my-account') }}" aria-label="My Account">
                                             <i class="lastudioicon-single-01-2"></i>
                                         </a>
                                     </li>
@@ -105,7 +112,7 @@
                                     <li>
                                         <button data-bs-toggle="offcanvas" data-bs-target="#cartSidebar">
                                             <i class="lastudioicon-bag-20"></i>
-                                            <span class="badge">03</span>
+                                            <span class="badge" id="cartCount"></span>
                                         </button>
                                     </li>
                                 </ul>
@@ -114,7 +121,8 @@
 
                             <!-- Header Middle Toggle Start -->
                             <div class="header-mid-toggle text-end d-lg-none">
-                                <button class="header-mid-toggle__toggle" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Menu">
+                                <button class="header-mid-toggle__toggle" data-bs-toggle="offcanvas"
+                                    data-bs-target="#mobileMenu" aria-label="Menu">
                                     <i class="lastudioicon-menu-4-2"></i>
                                 </button>
                             </div>
@@ -134,15 +142,15 @@
                     <!-- Menu Item List Start -->
                     <ul class="menu-items-list menu-uppercase menu-items-list--dark justify-content-center d-flex">
                         <li>
-                            <a class="active" href="{{url('/')}}">
+                            <a class="active" href="{{ url('/') }}">
                                 <span>Home</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{url('about')}}"><span>About us</span></a>
+                            <a href="{{ url('about') }}"><span>About us</span></a>
                         </li>
                         <li class="position-static">
-                            <a href="{{url('shop')}}">
+                            <a href="{{ url('shop') }}">
                                 <span>Shop</span>
                             </a>
                         </li>
@@ -155,7 +163,8 @@
                                 <div class="mega-menu__banner">
                                     <a href="#">
                                         <div class="mega-menu__banner--image">
-                                            <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner" width="470" height="475" />
+                                            <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner"
+                                                width="470" height="475" />
                                         </div>
                                         <div class="mega-menu__banner--caption">
                                             <h4 class="caption-title">New Arrival</h4>
@@ -216,13 +225,13 @@
                             </div>
                         </li>
                         <li>
-                            <a href="{{url('blogs')}}">
+                            <a href="{{ url('blogs') }}">
                                 <span>Blogs</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{url('contact')}}"><span>Contact Us</span></a>
-                        </li> 
+                            <a href="{{ url('contact') }}"><span>Contact Us</span></a>
+                        </li>
                     </ul>
                     <!-- Menu Item List End -->
                 </nav>
@@ -244,79 +253,14 @@
         </div>
         <div class="offcanvas-body">
             <ul class="offcanvas-cart-list">
-                <li>
-                    <!-- Offcanvas Cart Item Start -->
-                    <div class="offcanvas-cart-item">
-                        <div class="offcanvas-cart-item__thumbnail">
-                            <a href="#">
-                                <img src="public/assets/images/products/wines/product-02.png" width="70" height="84" alt="product" />
-                            </a>
-                        </div>
-                        <div class="offcanvas-cart-item__content">
-                            <h4 class="offcanvas-cart-item__title">
-                                <a href="#">Princess set</a>
-                            </h4>
-                            <span class="offcanvas-cart-item__quantity">
-                                1 × $69.99
-                            </span>
-                        </div>
-                        <a class="offcanvas-cart-item__remove" href="#" aria-label="remove">
-                            <i class="lastudioicon-e-remove"></i>
-                        </a>
-                    </div>
-                    <!-- Offcanvas Cart Item End -->
-                </li>
-                <li>
-                    <!-- Offcanvas Cart Item Start -->
-                    <div class="offcanvas-cart-item">
-                        <div class="offcanvas-cart-item__thumbnail">
-                            <a href="#">
-                                <img src="public/assets/images/products/wines/product-04.png" width="70" height="84" alt="product" />
-                            </a>
-                        </div>
-                        <div class="offcanvas-cart-item__content">
-                            <h4 class="offcanvas-cart-item__title">
-                                <a href="#">Senecio stapeliiformis </a>
-                            </h4>
-                            <span class="offcanvas-cart-item__quantity">
-                                1 × $89.99
-                            </span>
-                        </div>
-                        <a class="offcanvas-cart-item__remove" href="#" aria-label="remove">
-                            <i class="lastudioicon-e-remove"></i>
-                        </a>
-                    </div>
-                    <!-- Offcanvas Cart Item End -->
-                </li>
-                <li>
-                    <!-- Offcanvas Cart Item Start -->
-                    <div class="offcanvas-cart-item">
-                        <div class="offcanvas-cart-item__thumbnail">
-                            <a href="#">
-                                <img src="public/assets/images/products/wines/product-05.png" width="70" height="84" alt="product" />
-                            </a>
-                        </div>
-                        <div class="offcanvas-cart-item__content">
-                            <h4 class="offcanvas-cart-item__title">
-                                <a href="#">Hoya burtoniae </a>
-                            </h4>
-                            <span class="offcanvas-cart-item__quantity">
-                                1 × $35.99
-                            </span>
-                        </div>
-                        <a class="offcanvas-cart-item__remove" href="#" aria-label="remove">
-                            <i class="lastudioicon-e-remove"></i>
-                        </a>
-                    </div>
-                    <!-- Offcanvas Cart Item End -->
-                </li>
+                
             </ul>
         </div>
         <div class="offcanvas-footer">
             <!-- Free Shipping Goal Start-->
             <div class="free-shipping-goal">
                 <div class="free-shipping-goal__label text-center">
-                    Buy $3.03 more to enjoy
+                    {{-- Buy $3.03 more to enjoy --}}
                     <strong>FREE Shipping</strong>
                 </div>
                 <div class="free-shipping-goal__loading-bar">
@@ -330,7 +274,8 @@
                 <li>
                     <a href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-miterlimit="10">
                                 <path d="m9.5 2.5 3 3M1.5 10.5l3 3M11.5.5l3 3-10 10-4 1 1-4Z"></path>
                             </g>
                         </svg>
@@ -339,7 +284,8 @@
                 </li>
                 <li>
                     <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15.313" height="16" viewBox="0 0 15.313 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15.313" height="16"
+                            viewBox="0 0 15.313 16">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m.656 3.5 7 3 7-3M7.656 15.5v-9"></path>
                                 <path d="m.656 12.5 7 3 7-3v-9l-7-3-7 3Z"></path>
@@ -351,8 +297,11 @@
                 <li>
                     <a href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
-                                <path d="M5.5 4.5h5M5.5 9.5h5M13.5 7.5a2 2 0 0 1 2-2v-4a1 1 0 0 0-1-1h-13a1 1 0 0 0-1 1V5a2 2 0 0 1 0 4v3.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-3a2 2 0 0 1-2-2Z"></path>
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-miterlimit="10">
+                                <path
+                                    d="M5.5 4.5h5M5.5 9.5h5M13.5 7.5a2 2 0 0 1 2-2v-4a1 1 0 0 0-1-1h-13a1 1 0 0 0-1 1V5a2 2 0 0 1 0 4v3.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-3a2 2 0 0 1-2-2Z">
+                                </path>
                             </g>
                         </svg>
                         <span>Coupon</span>
@@ -409,7 +358,7 @@
             <!-- Cart Buttons End-->
             <div class="cart-buttons">
                 <a href="#" class="cart-buttons__btn-1 btn">Checkout</a>
-                <a href="#" class="cart-buttons__btn-2 btn">View Cart</a>
+                <a href="{{ route('cart') }}" class="cart-buttons__btn-2 btn">View Cart</a>
             </div>
             <!-- Cart Buttons End-->
         </div>
@@ -463,7 +412,8 @@
             <!-- Off Canvas Sidebar Menu End -->
 
             <!-- Off Canvas Sidebar Banner Start -->
-            <div class="offcanvas-sidebar__banner" style="
+            <div class="offcanvas-sidebar__banner"
+                style="
                 background-image: url(public/assets/images/shop-sidebar-banner.jpg);
             ">
                 <h3 class="banner-title">NEW NOW</h3>
@@ -538,17 +488,17 @@
             <nav class="navbar-mobile-menu">
                 <ul class="mobile-menu-items">
                     <li>
-                        <a href="{{url('/')}}">
+                        <a href="{{ url('/') }}">
                             Home
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('/about')}}">
+                        <a href="{{ url('/about') }}">
                             About
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('/shop')}}">
+                        <a href="{{ url('/shop') }}">
                             Shop
                         </a>
                     </li>
@@ -563,7 +513,8 @@
                             <div class="mega-menu__banner">
                                 <a href="#">
                                     <div class="mega-menu__banner--image">
-                                        <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner" width="269" height="271" />
+                                        <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner"
+                                            width="269" height="271" />
                                     </div>
                                     <div class="mega-menu__banner--caption">
                                         <h4 class="caption-title">New Arrival</h4>
@@ -620,20 +571,17 @@
                                         <ul class="mega-menu__social--social">
                                             <li>
                                                 <a href="#" aria-label="facebook">
-                                                    <i
-                                                        class="lastudioicon-b-facebook"></i>
+                                                    <i class="lastudioicon-b-facebook"></i>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#" aria-label="twitter">
-                                                    <i
-                                                        class="lastudioicon-b-twitter"></i>
+                                                    <i class="lastudioicon-b-twitter"></i>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#" aria-label="instagram">
-                                                    <i
-                                                        class="lastudioicon-b-instagram"></i>
+                                                    <i class="lastudioicon-b-instagram"></i>
                                                 </a>
                                             </li>
                                         </ul>
@@ -643,12 +591,12 @@
                         </div>
                     </li>
                     <li>
-                        <a href="{{url('/blogs')}}">
+                        <a href="{{ url('/blogs') }}">
                             Blogs
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('/contact')}}">
+                        <a href="{{ url('/contact') }}">
                             Contact
                         </a>
                     </li>
@@ -693,7 +641,7 @@
 
 
     <main>
-        @yield("content")
+        @yield('content')
     </main>
 
 
@@ -709,7 +657,8 @@
                     <!-- Footer About Start -->
                     <div class="footer-about text-xxl-start text-center mx-xxl-0 mx-auto">
                         <a class="logo justify-content-xxl-start justify-content-center" href="#">
-                            <img src="{{url('public/assets/images/logo.png')}}" alt="Logo" width="110" height="32" loading="lazy" />
+                            <img src="{{ url('public/assets/images/logo.png') }}" alt="Logo" width="110"
+                                height="32" loading="lazy" />
                         </a>
                         <p>Proin volutpat vitae libero at tincidunt. Maecenas</p>
                     </div>
@@ -821,7 +770,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="text-center text-md-end">
-                            <img src="public/assets/images/footer-payment-1.png" alt="Footer Payment" width="230" height="17" loading="lazy" />
+                            <img src="public/assets/images/footer-payment-1.png" alt="Footer Payment" width="230"
+                                height="17" loading="lazy" />
                         </div>
                     </div>
                 </div>
@@ -850,16 +800,24 @@
                                     <div class="swiper">
                                         <div class="swiper-wrapper">
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-01.png" alt="Product Single" width="742" height="778" loading="lazy" />
+                                                <img src="public/assets/images/products/wines/product-single-01.png"
+                                                    alt="Product Single" width="742" height="778"
+                                                    loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-02.png" alt="Product Single" width="742" height="778" loading="lazy" />
+                                                <img src="public/assets/images/products/wines/product-single-02.png"
+                                                    alt="Product Single" width="742" height="778"
+                                                    loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-03.png" alt="Product Single" width="742" height="778" loading="lazy" />
+                                                <img src="public/assets/images/products/wines/product-single-03.png"
+                                                    alt="Product Single" width="742" height="778"
+                                                    loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-04.png" alt="Product Single" width="742" height="778" loading="lazy" />
+                                                <img src="public/assets/images/products/wines/product-single-04.png"
+                                                    alt="Product Single" width="742" height="778"
+                                                    loading="lazy" />
                                             </div>
                                         </div>
                                         <div class="swiper-button-next" aria-label="arrow-right">
@@ -884,11 +842,8 @@
                                         <ins>$36.99</ins>
                                     </div>
                                     <div class="product-single-content__stock">
-                                        <span
-                                            class="stock-icon"
-                                            aria-label="check-circle">
-                                            <i
-                                                class="dlicon ui-1_check-circle-08"></i>
+                                        <span class="stock-icon" aria-label="check-circle">
+                                            <i class="dlicon ui-1_check-circle-08"></i>
                                         </span>
                                         <span class="stock-text">97 in stock</span>
                                     </div>
@@ -906,8 +861,7 @@
                                     <div class="product-single-content__quantity-add-to-cart">
                                         <div class="product-single-content__quantity product-quantity">
                                             <button type="button" class="decrease" aria-label="delete">
-                                                <i
-                                                    class="lastudioicon-i-delete-2"></i>
+                                                <i class="lastudioicon-i-delete-2"></i>
                                             </button>
                                             <input class="quantity-input" type="text" value="01" />
                                             <button type="button" class="increase" aria-label="add">
@@ -961,16 +915,17 @@
     <!-- JS Vendor, Plugins & Activation Script Files -->
 
     <!-- Bootstrap JS -->
-    <script src="{{url('public/assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Plugins JS -->
-    <script src="{{url('public/assets/js/swiper-bundle.min.js')}}"></script>
-    <script src="{{url('public/assets/js/masonry.pkgd.min.js')}}"></script>
-    <script src="{{url('public/assets/js/glightbox.min.js')}}"></script>
-    <script src="{{url('public/assets/js/nice-select2.js')}}"></script>
+    <script src="{{ url('public/assets/js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ url('public/assets/js/masonry.pkgd.min.js') }}"></script>
+    <script src="{{ url('public/assets/js/glightbox.min.js') }}"></script>
+    <script src="{{ url('public/assets/js/nice-select2.js') }}"></script>
 
     <!-- Activation JS -->
-    <script src="{{url('public/assets/js/main.js')}}"></script>
+    <script src="{{ url('public/assets/js/main.js') }}"></script>
+
 
 </body>
 

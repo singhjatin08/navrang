@@ -1,4 +1,4 @@
-@extends("main/include/layout")
+@extends("main.include.layout")
 @section("content")
 
 <div>

@@ -1,5 +1,8 @@
 "use strict"
 
+const APP_URL = window.appUrl;
+
+
 /*--
     Header Top High
 -----------------------------------*/
@@ -477,26 +480,26 @@ const countdown = (selector) => {
             days.innerText = result
                 ? "00"
                 : Math.floor(distance / day) > 9
-                ? Math.floor(distance / day)
-                : "0" + Math.floor(distance / day)
+                    ? Math.floor(distance / day)
+                    : "0" + Math.floor(distance / day)
 
             hours.innerText = result
                 ? "00"
                 : Math.floor((distance % day) / hour) > 9
-                ? Math.floor((distance % day) / hour)
-                : "0" + Math.floor((distance % day) / hour)
+                    ? Math.floor((distance % day) / hour)
+                    : "0" + Math.floor((distance % day) / hour)
 
             minutes.innerText = result
                 ? "00"
                 : Math.floor((distance % hour) / minute) > 9
-                ? Math.floor((distance % hour) / minute)
-                : "0" + Math.floor((distance % hour) / minute)
+                    ? Math.floor((distance % hour) / minute)
+                    : "0" + Math.floor((distance % hour) / minute)
 
             seconds.innerText = result
                 ? "00"
                 : Math.floor((distance % minute) / second) > 9
-                ? Math.floor((distance % minute) / second)
-                : "0" + Math.floor((distance % minute) / second)
+                    ? Math.floor((distance % minute) / second)
+                    : "0" + Math.floor((distance % minute) / second)
 
             if (result) {
                 clearInterval(x)
@@ -981,9 +984,9 @@ const handleScrollAnimation = () => {
     })
 }
 
-;["scroll", "load"].forEach((el) => {
-    window.addEventListener(el, handleScrollAnimation)
-})
+    ;["scroll", "load"].forEach((el) => {
+        window.addEventListener(el, handleScrollAnimation)
+    })
 
 /*--
     Automatic Pop-Up
@@ -1000,14 +1003,14 @@ const AutoPopup = (selector) => {
             popupOverlay.classList.add("open")
             popupOverlay.classList.remove("close")
         }, 1000)
-        ;[popupClose, popupOverlay].forEach((el) => {
-            el.addEventListener("click", () => {
-                popup.classList.remove("open")
-                popup.classList.add("close")
-                popupOverlay.classList.remove("open")
-                popupOverlay.classList.add("close")
+            ;[popupClose, popupOverlay].forEach((el) => {
+                el.addEventListener("click", () => {
+                    popup.classList.remove("open")
+                    popup.classList.add("close")
+                    popupOverlay.classList.remove("open")
+                    popupOverlay.classList.add("close")
+                })
             })
-        })
     }
 }
 
@@ -1027,3 +1030,343 @@ const currentYear = (selector) => {
 }
 
 currentYear(".current-year")
+
+
+function loadCart1() {
+    $.ajax({
+        type: "GET",
+        url: APP_URL + "/getCart",
+        success: function (data) {
+            // console.log(data)
+            if (data.status) {
+                var cart = $('ul.offcanvas-cart-list').html('');
+                var totalAmount = 0;
+                if (data.data.length !== 0) {
+                    data.data.forEach(function (product) {
+                        // console.log(product);
+                        var subtotal = product.product_sale_price * product.quantity;
+                        totalAmount += subtotal; // Add to total
+
+                        var item = `
+                            <li>
+                                <div class="offcanvas-cart-item">
+                                    <div class="offcanvas-cart-item__thumbnail">
+                                        <a href="#">
+                                            <img src="${APP_URL}/${product.product_image}" width="70" height="84" alt="product" />
+                                        </a>
+                                    </div>
+                                    <div class="offcanvas-cart-item__content">
+                                        <h4 class="offcanvas-cart-item__title">
+                                            <a href="#">${product.product_title}</a>
+                                        </h4>
+                                        <span class="offcanvas-cart-item__quantity">
+                                            ${product.quantity} × ₹ ${(product.product_sale_price ? product.product_sale_price : product.product_price)}
+                                        </span>
+
+                                    </div>
+                                    <a class="offcanvas-cart-item__remove cart-product-remove" href="#">
+                                        <i class="lastudioicon-e-remove remove" data-product-id="${product.product_id}" ></i>
+                                    </a>
+                                </div>
+                            </li>
+
+                            
+                        `;
+                        $("#cartCount").html(data.count)
+                        cart.append(item);
+                    });
+                } else {
+                    var item = `
+                        <li>
+                            <div class="text-center">
+                                <p>No products in cart.<p>
+                                <br>
+                                <a href="http://localhost/candle/shop" class="btn-theme-1">Shop Now</a>
+                            </div>
+                        </li>
+                    `;
+                    $("#cartCount").html(data.count)
+                    cart.append(item);
+                }
+
+                // Calculate tax (example: 10% GST)
+                var taxAmount = totalAmount * 0.10;
+                var grandTotal = totalAmount + taxAmount;
+
+                // Update Cart Totals
+                $('.cart-totals-table').html(`
+
+            <table class="table">
+                <tbody>
+                    <tr class="cart-subtotal">
+                        <th>Subtotal</th>
+                        <td>
+                            <span>₹ ${totalAmount.toFixed(2)}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Taxes & GST (10%)</th>
+                        <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
+                    </tr>                            
+
+                    <tr class="order-total">
+                        <th>Total</th>
+                        <td><strong>₹ ${grandTotal.toFixed(2)}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        `);
+
+            } else {
+                $('ul.offcanvas-cart-list').html(
+                    '<li><div class="text-center">No products in the cart</div></li>');
+                $('.cart-totals-table').html(`
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Subtotal</th>
+                        <td><span>₹ 0.00</span></td>
+                    </tr>
+                    <tr>
+                        <th>Taxes & GST</th>
+                        <td><span>₹ 0.00</span></td>
+                    </tr>
+                    <tr class="order-total">
+                        <th>Total</th>
+                        <td><strong>₹ 0.00</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        `);
+            }
+        },
+        error: function () {
+            $('ul.offcanvas-cart-list').html(
+                '<li><div class="text-center">Error loading cart</div></li>');
+        }
+    });
+}
+loadCart1()
+
+
+function loadCart() {
+    $.ajax({
+        type: "GET",
+        url: APP_URL + "/getCart",
+        success: function (data) {
+            // console.log(data)
+            if (data.status) {
+                var table = $('#cartList');
+                var tableBody = table.find('tbody').html('');
+                var totalAmount = 0;
+                if (data.data.length !== 0) {
+                    data.data.forEach(function (product) {
+                        // console.log(product);
+                        var subtotal = product.product_sale_price * product.quantity;
+                        totalAmount += subtotal; // Add to total
+
+                        var row = `
+                            <tr class="cart-item">
+                                <td class="cart-product-remove">
+                                    <a data-product-id="${product.product_id}" href="#" class="remove">×</a>
+                                </td>
+    
+                                <td class="cart-product-thumbnail">
+                                    <a href="product-single.html">
+                                        <img src="${product.product_image}" alt="Product" width="70" height="89">
+                                    </a>
+                                </td>
+    
+                                <td class="cart-product-name">
+                                    <a href="product-single.html">${product.product_title}</a>
+                                </td>
+    
+                                <td class="cart-product-price text-md-center" data-title="Price">
+                                    <span class="price-amount">
+                                        <ins>₹<strike>${product.product_price}</strike> ${product.product_sale_price}</ins>
+                                    </span>
+                                </td>
+    
+                                <td class="cart-product-quantity text-md-center" data-title="Quantity">
+                                    <div class="cart-table__quantity product-quantity">
+                                        <button type="button" class="decrease-cart" data-product-id="${product.product_id}" aria-label="delete">
+                                            <i class="lastudioicon-i-delete-2"></i>
+                                        </button>
+                                        <input class="quantity-input" type="text" value="${product.quantity}">
+                                        <button>
+                                            <a href="#" class="add-to-cart" data-product-id="${product.product_id}">
+                                                <i class="lastudioicon-i-add-2"></i>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </td>
+    
+                                <td class="cart-product-subtotal text-md-center" data-title="Subtotal">
+                                    <span class="price-amount">
+                                        ₹${subtotal.toFixed(2)}
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+                        $("#cartCount").html(data.count)
+                        tableBody.append(row);
+                    });
+                } else {
+                    var row = `
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No products in cart.
+                                <br>
+                                <a href="https://www.devtechera.com/projects/candle/shop" class="btn-theme-1">Shop Now</a>
+                            </td>
+                        </tr>
+                    `;
+                    $("#cartCount").html(data.count)
+                    tableBody.append(row);
+                }
+
+                // Calculate tax (example: 10% GST)
+                var taxAmount = totalAmount * 0.10;
+                var grandTotal = totalAmount + taxAmount;
+
+                // Update Cart Totals
+                $('.cart-totals__table').html(`
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Subtotal</th>
+                                <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Taxes & GST (10%)</th>
+                                <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong>₹ ${grandTotal.toFixed(2)}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `);
+
+            } else {
+                $('#cartList tbody').html(
+                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>');
+                $('.cart-totals__table').html(`
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Subtotal</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr>
+                                <th>Taxes & GST</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong>₹ 0.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `);
+            }
+        },
+        error: function () {
+            $('#cartList tbody').html(
+                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>');
+        }
+    });
+}
+
+loadCart();
+
+//add to cart
+$(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // Use event delegation to bind click event
+    $(document).on('click', '.add-to-cart', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+        var productId = $(this).data('product-id');
+        var quantity = 1;
+
+        var data = {
+            'product_id': productId,
+            'quantity': quantity
+        };
+
+        $.ajax({
+            url: APP_URL + "/add-cart",
+            method: 'POST',
+            data: data,
+            success: function (response) {
+                loadCart1();  // Make sure this function exists
+                loadCart();
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Something went wrong!');
+            }
+        });
+    });
+});
+
+
+//delete cart
+$(document).on('click', '.cart-product-remove .remove', function () {
+    var product_id = $(this).data('product-id');
+    if (product_id) {
+        $.ajax({
+            type: "GET",
+            url: APP_URL + "/deleteCart" + product_id,
+            success: function (data) {
+                if (data.status == "success") {
+                    loadCart()
+                    loadCart1()
+                } else {
+                    console.log("something went wrong!")
+                }
+            },
+            error: function (error) {
+                console.log(error.responseJSON);
+            }
+        });
+    } else {
+        return false;
+    }
+});
+
+$(document).on('click', '.decrease-cart', function () {
+    var product_id = $(this).data('product-id')
+    var quantity = 1;
+
+    var data = {
+        'product_id': product_id,
+        'quantity': quantity
+    };
+    if (product_id) {
+        $.ajax({
+            type: "POST",
+            url: APP_URL + "/remove-cart-quantity",
+            data: data,
+            success: function (data) {
+                console.log(data)
+                loadCart()
+                loadCart1()
+            },
+            error: function (error) {
+                console.log(error.responseJSON);
+            }
+        });
+    } else {
+        return false;
+    }
+});

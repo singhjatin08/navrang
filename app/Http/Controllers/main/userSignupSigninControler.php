@@ -122,11 +122,13 @@ class userSignupSigninControler extends Controller
                         $cookieCart = json_decode(Cookie::get('cart', '[]'), true);
 
                         foreach ($cookieCart as $item) {
-                            cartModel::create([
-                                'username' => Session::get('user')->username,
-                                'product_id' => $item['product_id'],
-                                'quantity' => $item['quantity'],
-                            ]);
+                            if (!empty($item['product_id'])) {
+                                cartModel::create([
+                                    'username' => Session::get('user')->username,
+                                    'product_id' => $item['product_id'],
+                                    'quantity' => $item['quantity'],
+                                ]);
+                            }
                         }
                         Cookie::queue(Cookie::forget('cart'));
 
