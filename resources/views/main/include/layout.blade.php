@@ -357,7 +357,7 @@
 
             <!-- Cart Buttons End-->
             <div class="cart-buttons">
-                <a href="#" class="cart-buttons__btn-1 btn">Checkout</a>
+                {{-- <a href="#" class="cart-buttons__btn-1 btn">Checkout</a> --}}
                 <a href="{{ route('cart') }}" class="cart-buttons__btn-2 btn">View Cart</a>
             </div>
             <!-- Cart Buttons End-->

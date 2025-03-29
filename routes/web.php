@@ -34,6 +34,7 @@ Route::post("add-cart",[cartController::class,"addToCart"])->name("cart.add");
 Route::post("remove-cart-quantity",[cartController::class,"reduceQuantity"])->name("cart.remove");
 
 Route::get("checkout",[orderController::class,"checkout"])->name("checkout");
+Route::post("orderProcess",[orderController::class,"orderProcess"])->name("orderProcess");
 
 
 Route::get('my-account', [userSignupSigninControler::class,"myAccount"])->name("my-account");

@@ -1081,7 +1081,7 @@ function loadCart1() {
                             <div class="text-center">
                                 <p>No products in cart.<p>
                                 <br>
-                                <a href="http://localhost/candle/shop" class="btn-theme-1">Shop Now</a>
+                                <a href="http://localhost/navrang/shop" class="btn-theme-1">Shop Now</a>
                             </div>
                         </li>
                     `;
@@ -1219,7 +1219,7 @@ function loadCart() {
                             <td colspan="6" class="text-center">
                                 No products in cart.
                                 <br>
-                                <a href="https://www.devtechera.com/projects/candle/shop" class="btn-theme-1">Shop Now</a>
+                                <a href="https://www.devtechera.com/projects/navrang/shop" class="btn-theme-1">Shop Now</a>
                             </td>
                         </tr>
                     `;
@@ -1282,6 +1282,100 @@ function loadCart() {
 }
 
 loadCart();
+
+function checkoutCart() {
+    $.ajax({
+        type: "GET",
+        url: APP_URL + "/getCart",
+        success: function (data) {
+            // console.log(data)
+            if (data.status) {
+                var table = $('table.checkout-product-list');
+                var tableBody = table.find('tbody').html('');
+                var totalAmount = 0;
+                if (data.data.length !== 0) {
+                    data.data.forEach(function (product) {
+                        // console.log(product);
+                        var subtotal = product.product_sale_price * product.quantity;
+                        totalAmount += subtotal; // Add to total
+
+                        var row = `
+                            <tr class="cart-item">
+                                <td class="product-name">
+                                ${product.product_title}
+                                    <strong>×&nbsp;${product.quantity}</strong>
+                                </td>
+                                <td class="product-total">
+                                    <span>₹ ${subtotal.toFixed(2)}</span>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.append(row);
+                    });
+                } else {
+                    var row = `
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No products in cart.
+                                <br>
+                                <a href="https://www.devtechera.com/projects/navrang/shop" class="btn-theme-1">Shop Now</a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
+                }
+
+                // Calculate tax (example: 10% GST)
+                var taxAmount = 50;
+                var grandTotal = totalAmount + taxAmount;
+
+                // Update Cart Totals
+                $('#checkout-totals-table').html(`
+                    <tr class="cart-subtotal">
+                        <td>Subtotal</td>
+                        <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
+                    </tr>
+                    <tr class="cart-shipping">
+                        <td>Shipping Charges</td>
+                        <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
+                    </tr>
+                    <tr class="order-total">
+                        <th>Total</th>
+                        <td><strong>₹ ${grandTotal.toFixed(2)}</strong><input type="hidden" name="total_order_amount" value="${grandTotal.toFixed(2)}"></td>
+                    </tr>
+                `);
+
+            } else {
+                $('#cartList tbody').html(
+                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>');
+                $('.cart-totals__table').html(`
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Subtotal</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr>
+                                <th>Taxes & GST</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong>₹ 0.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `);
+            }
+        },
+        error: function () {
+            $('#cartList tbody').html(
+                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>');
+        }
+    });
+}
+
+checkoutCart();
 
 //add to cart
 $(document).ready(function () {

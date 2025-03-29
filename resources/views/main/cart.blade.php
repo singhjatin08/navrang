@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="cart-totals__checkout">
-                                <a href="#">Proceed to checkout</a>
+                                <a href="{{route('checkout')}}">Proceed to checkout</a>
                             </div>
                         </div>
                         <!-- Cart Totals End-->

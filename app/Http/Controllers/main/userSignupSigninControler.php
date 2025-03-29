@@ -121,16 +121,23 @@ class userSignupSigninControler extends Controller
                         Session::put('user', $user);
                         $cookieCart = json_decode(Cookie::get('cart', '[]'), true);
 
-                        foreach ($cookieCart as $item) {
-                            if (!empty($item['product_id'])) {
-                                cartModel::create([
-                                    'username' => Session::get('user')->username,
-                                    'product_id' => $item['product_id'],
-                                    'quantity' => $item['quantity'],
-                                ]);
+                        // Check if cart is not empty
+                        if (!empty($cookieCart)) {
+                            foreach ($cookieCart as $item) {
+                                if (!empty($item['product_id'])) {
+                                    // Insert cart items into the database
+                                    cartModel::create([
+                                        'username' => Session::get('user')->username,
+                                        'product_id' => $item['product_id'],
+                                        'quantity' => $item['quantity'],
+                                    ]);
+                                }
                             }
+
+                            // After processing the cart, clear the cookie
+                            Cookie::queue(Cookie::forget('cart'));
                         }
-                        Cookie::queue(Cookie::forget('cart'));
+
 
                         $result = [
                             "status" => "success",
@@ -157,7 +164,8 @@ class userSignupSigninControler extends Controller
                     "status" => "error",
                     "message" => "User not found."
                 ];
-                return response()->json($result);;
+                return response()->json($result);
+                ;
             }
         } else {
             $result = [
