@@ -4,10 +4,15 @@
     --color1: #F9DCBE;
     --color2: #450A20;
     --color3: #A43861;
+    --grey: #C2C2C2;
 }
 
 .bg-cream {
     background-color: var(--color1) !important;
+}
+
+.bg-grey{
+    background-color: var(--grey) !important;
 }
 
 .btn-brown {

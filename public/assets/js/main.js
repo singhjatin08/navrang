@@ -1030,21 +1030,19 @@ const currentYear = (selector) => {
 }
 
 currentYear(".current-year")
-
-
 function loadCart1() {
     $.ajax({
         type: "GET",
         url: APP_URL + "/getCart",
         success: function (data) {
-            // console.log(data)
             if (data.status) {
                 var cart = $('ul.offcanvas-cart-list').html('');
                 var totalAmount = 0;
+
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        // console.log(product);
-                        var subtotal = product.product_sale_price * product.quantity;
+                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
+                        var subtotal = price * product.quantity;
                         totalAmount += subtotal; // Add to total
 
                         var item = `
@@ -1060,19 +1058,16 @@ function loadCart1() {
                                             <a href="#">${product.product_title}</a>
                                         </h4>
                                         <span class="offcanvas-cart-item__quantity">
-                                            ${product.quantity} × ₹ ${(product.product_sale_price ? product.product_sale_price : product.product_price)}
+                                            ${product.quantity} × ₹ ${price.toFixed(2)}
                                         </span>
-
                                     </div>
                                     <a class="offcanvas-cart-item__remove cart-product-remove" href="#">
-                                        <i class="lastudioicon-e-remove remove" data-product-id="${product.product_id}" ></i>
+                                        <i class="lastudioicon-e-remove remove" data-product-id="${product.product_id}"></i>
                                     </a>
                                 </div>
                             </li>
-
-                            
                         `;
-                        $("#cartCount").html(data.count)
+                        $("#cartCount").html(data.count);
                         cart.append(item);
                     });
                 } else {
@@ -1085,7 +1080,7 @@ function loadCart1() {
                             </div>
                         </li>
                     `;
-                    $("#cartCount").html(data.count)
+                    $("#cartCount").html(data.count);
                     cart.append(item);
                 }
 
@@ -1095,60 +1090,52 @@ function loadCart1() {
 
                 // Update Cart Totals
                 $('.cart-totals-table').html(`
-
-            <table class="table">
-                <tbody>
-                    <tr class="cart-subtotal">
-                        <th>Subtotal</th>
-                        <td>
-                            <span>₹ ${totalAmount.toFixed(2)}</span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>Taxes & GST (10%)</th>
-                        <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
-                    </tr>                            
-
-                    <tr class="order-total">
-                        <th>Total</th>
-                        <td><strong>₹ ${grandTotal.toFixed(2)}</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-
-        `);
-
+                    <table class="table">
+                        <tbody>
+                            <tr class="cart-subtotal">
+                                <th>Subtotal</th>
+                                <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Taxes & GST (10%)</th>
+                                <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
+                            </tr>                            
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong>₹ ${grandTotal.toFixed(2)}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `);
             } else {
-                $('ul.offcanvas-cart-list').html(
-                    '<li><div class="text-center">No products in the cart</div></li>');
+                $('ul.offcanvas-cart-list').html('<li><div class="text-center">No products in the cart</div></li>');
                 $('.cart-totals-table').html(`
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Subtotal</th>
-                        <td><span>₹ 0.00</span></td>
-                    </tr>
-                    <tr>
-                        <th>Taxes & GST</th>
-                        <td><span>₹ 0.00</span></td>
-                    </tr>
-                    <tr class="order-total">
-                        <th>Total</th>
-                        <td><strong>₹ 0.00</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        `);
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Subtotal</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr>
+                                <th>Taxes & GST</th>
+                                <td><span>₹ 0.00</span></td>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong>₹ 0.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `);
             }
         },
         error: function () {
-            $('ul.offcanvas-cart-list').html(
-                '<li><div class="text-center">Error loading cart</div></li>');
+            $('ul.offcanvas-cart-list').html('<li><div class="text-center">Error loading cart</div></li>');
         }
     });
 }
-loadCart1()
+
+loadCart1();
 
 
 function loadCart() {
@@ -1156,15 +1143,15 @@ function loadCart() {
         type: "GET",
         url: APP_URL + "/getCart",
         success: function (data) {
-            // console.log(data)
             if (data.status) {
                 var table = $('#cartList');
                 var tableBody = table.find('tbody').html('');
                 var totalAmount = 0;
+
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        // console.log(product);
-                        var subtotal = product.product_sale_price * product.quantity;
+                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
+                        var subtotal = price * product.quantity;
                         totalAmount += subtotal; // Add to total
 
                         var row = `
@@ -1185,7 +1172,7 @@ function loadCart() {
     
                                 <td class="cart-product-price text-md-center" data-title="Price">
                                     <span class="price-amount">
-                                        <ins>₹<strike>${product.product_price}</strike> ${product.product_sale_price}</ins>
+                                        <ins>₹ ${product.product_sale_price ? `<strike>${product.product_price}</strike> ${product.product_sale_price}` : product.product_price}</ins>
                                     </span>
                                 </td>
     
@@ -1210,7 +1197,7 @@ function loadCart() {
                                 </td>
                             </tr>
                         `;
-                        $("#cartCount").html(data.count)
+                        $("#cartCount").html(data.count);
                         tableBody.append(row);
                     });
                 } else {
@@ -1223,7 +1210,7 @@ function loadCart() {
                             </td>
                         </tr>
                     `;
-                    $("#cartCount").html(data.count)
+                    $("#cartCount").html(data.count);
                     tableBody.append(row);
                 }
 
@@ -1282,27 +1269,26 @@ function loadCart() {
 }
 
 loadCart();
-
 function checkoutCart() {
     $.ajax({
         type: "GET",
         url: APP_URL + "/getCart",
         success: function (data) {
-            // console.log(data)
             if (data.status) {
                 var table = $('table.checkout-product-list');
                 var tableBody = table.find('tbody').html('');
                 var totalAmount = 0;
+
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        // console.log(product);
-                        var subtotal = product.product_sale_price * product.quantity;
+                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
+                        var subtotal = price * product.quantity;
                         totalAmount += subtotal; // Add to total
 
                         var row = `
                             <tr class="cart-item">
                                 <td class="product-name">
-                                ${product.product_title}
+                                    ${product.product_title}
                                     <strong>×&nbsp;${product.quantity}</strong>
                                 </td>
                                 <td class="product-total">
@@ -1325,9 +1311,9 @@ function checkoutCart() {
                     tableBody.append(row);
                 }
 
-                // Calculate tax (example: 10% GST)
-                var taxAmount = 50;
-                var grandTotal = totalAmount + taxAmount;
+                // Fixed Shipping Charges
+                var shippingCharges = 50;
+                var grandTotal = totalAmount + shippingCharges;
 
                 // Update Cart Totals
                 $('#checkout-totals-table').html(`
@@ -1337,45 +1323,45 @@ function checkoutCart() {
                     </tr>
                     <tr class="cart-shipping">
                         <td>Shipping Charges</td>
-                        <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
+                        <td><span>₹ ${shippingCharges.toFixed(2)}</span></td>
                     </tr>
                     <tr class="order-total">
                         <th>Total</th>
-                        <td><strong>₹ ${grandTotal.toFixed(2)}</strong><input type="hidden" name="total_order_amount" value="${grandTotal.toFixed(2)}"></td>
+                        <td><strong>₹ ${grandTotal.toFixed(2)}</strong>
+                            <input type="hidden" name="total_order_amount" value="${grandTotal.toFixed(2)}">
+                        </td>
                     </tr>
                 `);
-
             } else {
-                $('#cartList tbody').html(
-                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>');
-                $('.cart-totals__table').html(`
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Subtotal</th>
-                                <td><span>₹ 0.00</span></td>
-                            </tr>
-                            <tr>
-                                <th>Taxes & GST</th>
-                                <td><span>₹ 0.00</span></td>
-                            </tr>
-                            <tr class="order-total">
-                                <th>Total</th>
-                                <td><strong>₹ 0.00</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                $('table.checkout-product-list tbody').html(
+                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>'
+                );
+                $('#checkout-totals-table').html(`
+                    <tr>
+                        <th>Subtotal</th>
+                        <td><span>₹ 0.00</span></td>
+                    </tr>
+                    <tr>
+                        <th>Shipping Charges</th>
+                        <td><span>₹ 0.00</span></td>
+                    </tr>
+                    <tr class="order-total">
+                        <th>Total</th>
+                        <td><strong>₹ 0.00</strong></td>
+                    </tr>
                 `);
             }
         },
         error: function () {
-            $('#cartList tbody').html(
-                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>');
+            $('table.checkout-product-list tbody').html(
+                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>'
+            );
         }
     });
 }
 
 checkoutCart();
+
 
 //add to cart
 $(document).ready(function () {

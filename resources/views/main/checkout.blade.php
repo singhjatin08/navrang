@@ -274,7 +274,7 @@
                                             <!-- Single Form Start -->
                                             <div class="single-form">
                                                 <label class="single-form__label">Country / Region *</label>
-                                                <select name="shipping_country" disabled
+                                                <select name="shipping_country"
                                                     class="single-form__select select2">
                                                     <option value="">
                                                         Select a country /
@@ -388,86 +388,9 @@
 
 
                                         <div class="checkout-details__payment-method">
-                                            <div class="accordion" id="payment-method">
-                                                <form action="#">
-                                                    <div class="accordion-item">
-                                                        <div class="single-form" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseOne">
-                                                            <input type="radio" name="payment-method"
-                                                                id="bank-transfer" />
-                                                            <label for="bank-transfer"
-                                                                class="single-form__label radio-label">
-                                                                <span></span>
-                                                                Direct bank
-                                                                transfer
-                                                            </label>
-                                                        </div>
-                                                        <div id="collapseOne" class="accordion-collapse collapse"
-                                                            data-bs-parent="#payment-method">
-                                                            <div class="payment-method-body">
-                                                                <p>
-                                                                    Make your
-                                                                    payment
-                                                                    directly
-                                                                    into our
-                                                                    bank
-                                                                    account.
-                                                                    Please use
-                                                                    your Order
-                                                                    ID as the
-                                                                    payment
-                                                                    reference.
-                                                                    Your order
-                                                                    will not be
-                                                                    shipped
-                                                                    until the
-                                                                    funds have
-                                                                    cleared in
-                                                                    our account.
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="accordion-item">
-                                                        <div class="single-form collapsed" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseThree">
-                                                            <input type="radio" name="payment-method"
-                                                                id="cash-on-delivery" />
-                                                            <label for="cash-on-delivery"
-                                                                class="single-form__label radio-label">
-                                                                <span></span>
-                                                                Cash On Delivery
-                                                            </label>
-                                                        </div>
-                                                        <div id="collapseThree" class="accordion-collapse collapse"
-                                                            data-bs-parent="#payment-method">
-                                                            <div class="payment-method-body">
-                                                                <p>
-                                                                    Make your
-                                                                    payment
-                                                                    directly
-                                                                    into our
-                                                                    bank
-                                                                    account.
-                                                                    Please use
-                                                                    your Order
-                                                                    ID as the
-                                                                    payment
-                                                                    reference.
-                                                                    Your order
-                                                                    will not be
-                                                                    shipped
-                                                                    until the
-                                                                    funds have
-                                                                    cleared in
-                                                                    our account.
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                            <p><input type="radio" name="payment_method" value="Cash On Deliery"> Cash on Delivery</p>
+                                            <p><input type="radio" name="payment_method" value="Bank Transfer"> Bank Transfer</p>
+                                            <div class="error payment_method_err"></div>
                                         </div>
 
                                         <div class="checkout-details__privacy-policy">
@@ -586,12 +509,12 @@
                     //alert(data.status);
                     console.log(data)
                     if (data.status == 'success') {
-                        // Swal.fire({
-                        //     icon: data.status,
-                        //     title: data.message
-                        // }).then(() => {
-                        //     window.location.href = "{{ route('home') }}";
-                        // });
+                        Swal.fire({
+                            icon: data.status,
+                            title: data.message
+                        }).then(() => {
+                            window.location.href = "{{ route('home') }}";
+                        });
                     } else {
                         Swal.fire({
                             icon: data.status,
@@ -609,7 +532,7 @@
         })
 
         function printError(err) {
-            $('error').text('');
+            $('.error').text('');
             $.each(err, function(key, value) {
                 $("." + key + "_err").text(value)
             })

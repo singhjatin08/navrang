@@ -18,6 +18,7 @@ class productModel extends Model
         'product_short_description',
         'product_description',
         'product_image',
+        'feature_product',
         'status',
         'created_by',
     ];
@@ -36,10 +37,11 @@ class productModel extends Model
                 "t_products.product_id" => $productId,
                 "t_products.status" => 1,
             ])
-            ->select("t_products.*", "c.category_name")
+            ->select("t_products.*", "c.category_name", "c.id as category_id")
             ->first();
 
         if ($product) {
+            // Fetch product gallery images
             $product->gallery_images = DB::table('t_product_gallery')
                 ->where([
                     'product_id' => $product->product_id,
@@ -47,8 +49,123 @@ class productModel extends Model
                 ])
                 ->get()
                 ->toArray();
+
+            $suggestedProducts = DB::table("t_products")
+                ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
+                ->where([
+                    // "product_category" => $product->category_id,
+                    "t_products.status" => 1,
+                ])
+                ->where("product_id", "!=", $productId)
+                ->select("t_products.*", "c.category_name")
+                ->inRandomOrder()
+                ->limit(4)
+                ->get();
+
+            return [
+                'product' => $product,
+                'suggestedProducts' => $suggestedProducts
+            ];
         }
 
-        return $product;
+        return null;
+    }
+
+
+    public function latestProduct()
+    {
+        $products = DB::table("t_products")
+            ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
+            ->where([
+                "t_products.status" => 1,
+                "t_products.feature_product" => null,
+            ])
+            ->select("t_products.*", "c.category_name")
+            ->limit(8)
+            ->orderBy("id", "desc")
+            ->get();
+
+        if (!$products->isEmpty()) {
+            foreach ($products as $product) {
+                $product->gallery_images = DB::table('t_product_gallery')
+                    ->where([
+                        'product_id' => $product->product_id,
+                        'status' => 1
+                    ])
+                    ->get()
+                    ->toArray();
+            }
+        }
+
+        return $products;
+    }
+
+
+
+    public function featureProducts()
+    {
+        $products = DB::table("t_products")
+            ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
+            ->where([
+                "t_products.status" => 1,
+                "t_products.feature_product" => "Yes",
+            ])
+            ->select("t_products.*", "c.category_name")
+            ->limit(8)
+            ->orderBy("id", "desc")
+            ->get();
+
+        if (!$products->isEmpty()) {
+            foreach ($products as $product) {
+                $product->gallery_images = DB::table('t_product_gallery')
+                    ->where([
+                        'product_id' => $product->product_id,
+                        'status' => 1
+                    ])
+                    ->get()
+                    ->toArray();
+            }
+        }
+
+        return $products;
+    }
+
+
+    public function productByCategory($slug)
+    {
+        $products = DB::table("t_products")
+            ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
+            ->where([
+                "c.slug" => $slug,
+                "t_products.status" => 1,
+            ])
+            ->select("t_products.*", "c.category_name")
+            ->orderBy('t_products.id', 'DESC')
+            ->paginate(9);
+
+        if (!$products->isEmpty()) {
+            foreach ($products as $product) {
+                $product->gallery_images = DB::table('t_product_gallery')
+                    ->where([
+                        'product_id' => $product->product_id,
+                        'status' => 1
+                    ])
+                    ->get()
+                    ->toArray();
+            }
+        }
+
+        return $products;
+    }
+
+
+    public function getAllProducts()
+    {
+        $products = DB::table('t_products')
+            ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
+            ->select('t_products.*', 'c.category_name')
+            ->orderBy('t_products.id', 'DESC')
+            ->paginate(9);
+            return $products;
     }
 }

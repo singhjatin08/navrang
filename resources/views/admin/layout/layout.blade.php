@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jay Stud Farm - Marwari Horses</title>
+    <title>Navrang Admin</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -82,7 +82,7 @@
             <a href="index.php" class="brand-link bg-brown">
                 <img src="{{url('public/admin_assets/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Jay Stud Farm</span>
+                <span class="brand-text font-weight-light">NAVRANG</span>
             </a>
 
             <div class="sidebar bg-light">
@@ -130,6 +130,24 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.orders')}}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-cart-arrow-down"></i>
+                                <p>
+                                    Orders
+                                </p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{route('admin.blogs')}}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-newspaper"></i>
+                                <p>
+                                    Blogs
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{route('admin.category')}}" class="nav-link">
                                 <i class="nav-icon fas fa-tag"></i>

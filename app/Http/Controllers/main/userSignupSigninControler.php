@@ -4,6 +4,7 @@ namespace App\Http\Controllers\main;
 
 use App\Http\Controllers\Controller;
 use App\Models\cartModel;
+use App\Models\orderModel;
 use App\Models\user\userModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -16,12 +17,21 @@ class userSignupSigninControler extends Controller
 
     public function myAccount()
     {
-        return view("main/my-account");
+        $orderModel = new orderModel();
+        $orders = $orderModel->getOrderDetailbyUserID(Session::get("user")->username);
+        return view("main.my-account", ['orders' => $orders]);
+    }
+
+    public function viewOrderDetails($user_id)
+    {
+        $orderModel = new orderModel();
+        $order = $orderModel->getOrderDetailbyID($user_id);
+        return view('main.view-order-details', ['order' => $order]);
     }
 
     public function signup()
     {
-        return view("main/signup");
+        return view("main.signup");
     }
     public function signupProcess(Request $request)
     {
@@ -94,7 +104,7 @@ class userSignupSigninControler extends Controller
 
     public function login()
     {
-        return view("main/login");
+        return view("main.login");
     }
     public function loginProcess(Request $request)
     {
@@ -164,8 +174,7 @@ class userSignupSigninControler extends Controller
                     "status" => "error",
                     "message" => "User not found."
                 ];
-                return response()->json($result);
-                ;
+                return response()->json($result);;
             }
         } else {
             $result = [

@@ -16,12 +16,12 @@ class productController extends Controller
     public function products()
     {   
         $products = DB::select("SELECT p.*, c.category_name FROM t_products AS p LEFT JOIN t_category AS c ON p.product_category = c.id;");
-        return view('admin/product.product', ['products' => $products]);
+        return view('admin.product.product', ['products' => $products]);
     }
     public function addProduct()
     {
         $categories = categoryModel::where('status', 1)->get();
-        return view('admin/product.addProduct', ['categories' => $categories]);
+        return view('admin.product.addProduct', ['categories' => $categories]);
     }
     public function addProductProcess(Request $request)
     {
@@ -50,6 +50,7 @@ class productController extends Controller
                 'product_short_description' => $request->input('short_description'),
                 'product_description' => $request->input('description'),
                 'product_image' => $path,
+                'feature_product' => $request->input('feature_product'),
                 'created_by' => Session::get('admin')->username,
                 'status' => $request->input('status')
             ];
@@ -67,7 +68,7 @@ class productController extends Controller
                             'type'=>"image",
                             'product_id' => $p_id,
                             'file_path' => $filePath,
-                            'created_by' => Session::get('user')->username,
+                            'created_by' => Session::get('admin')->username,
                             'status'=>1,
                         ]);
                     }
@@ -103,7 +104,7 @@ class productController extends Controller
             ->where('product_id', $product->product_id)
             ->get()
             ->toArray();
-        return view('admin/product.updateProduct', ['product' => $product, 'categories' => $categories]);
+        return view('admin.product.updateProduct', ['product' => $product, 'categories' => $categories]);
     }
 
     public function updateProductProcess(Request $request, $id)
@@ -138,6 +139,7 @@ class productController extends Controller
             'product_sale_price' => $request->input('sale_price'),
             'product_short_description' => $request->input('short_description'),
             'product_description' => $request->input('description'),
+            'feature_product' => $request->input('feature_product'),
             'created_by' => Session::get('admin')->username,
             'status' => $request->input('status')
         ];

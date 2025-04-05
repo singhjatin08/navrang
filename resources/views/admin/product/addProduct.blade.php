@@ -113,6 +113,18 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label for="feature_product">Feature Product</label><br>
+                                        <span class="mx-2">
+                                            <input type="radio" name="feature_product" value="Yes"> Yes
+                                        </span>
+                                        <span class="mx-2">
+                                            <input type="radio" checked name="feature_product" value=""> No
+                                        </span>
+                                        <div class="error feature_product_err"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label for="status">Status</label>
                                         <select name="status" id="status" class="form-control form-select">
                                             <option value="">Select Status</option>

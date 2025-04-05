@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\admin\bannerController;
+use App\Http\Controllers\admin\blogsController;
 use App\Http\Controllers\admin\category\categoryController;
 use App\Http\Controllers\admin\homeController;
 use App\Http\Controllers\admin\loginController;
+use App\Http\Controllers\admin\orderController as AdminOrderController;
 use App\Http\Controllers\admin\product\productController;
+use App\Http\Controllers\main\blogsController as MainBlogsController;
 use App\Http\Controllers\main\cartController;
 use App\Http\Controllers\main\homeController as MainHomeController;
 use App\Http\Controllers\main\orderController;
@@ -13,17 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[MainHomeController::class,"index"])->name("home");
 Route::get('/about', function () {
-    return view('main/about');
+    return view('main.about');
 });
 Route::get('contact', [MainHomeController::class,"contact"]);
 Route::post('sendEnquiry', [MainHomeController::class,"sendEnquiry"])->name("sendEnquiry");
 
 
-Route::get('/blogs', function () {
-    return view('main/blogs');
-});
+Route::get('blogs',[MainBlogsController::class,'blogs'])->name('blogs');
+Route::get('blog/{slug}',[MainBlogsController::class,'blogDetail'])->name('blog.detail');
+Route::get('blogs/{slug}',[MainBlogsController::class,'blogByCategory'])->name('blog.bycategory');
 
 Route::get("shop", [MainProductController::class, "shop"])->name("shop");
+Route::get("category/{category}", [MainProductController::class, "ProductByCategory"])->name("ProductByCategory");
 Route::get("product-details/{pId}", [MainProductController::class,"ProductDetails"])->name("product-details");
 
 
@@ -38,6 +43,7 @@ Route::post("orderProcess",[orderController::class,"orderProcess"])->name("order
 
 
 Route::get('my-account', [userSignupSigninControler::class,"myAccount"])->name("my-account");
+Route::get('my-account/order/{order_id}', [userSignupSigninControler::class,"viewOrderDetails"])->name("view-order");
 Route::get('login', [userSignupSigninControler::class,"login"])->name("login");
 Route::get('logout', [userSignupSigninControler::class,"logout"])->name("logout");
 Route::post("loginProcess",[userSignupSigninControler::class,"loginProcess"])->name("loginProcess");
@@ -77,6 +83,26 @@ Route::middleware(['adminCheck'])->group(function () {
     Route::get('/admin/updateProduct/{pID}', [productController::class, "updateProduct"])->name('admin.updateProduct');
     Route::post('/admin/updateProductProcess/{id}', [ProductController::class, 'updateProductProcess'])->name('admin.updateProductProcess');
     Route::get('/admin/deleteGalleryImage/{gID}', [productController::class, "deleteGalleryImage"]);
+
+    //orders
+    Route::get("/admin/orders", [AdminOrderController::class,"orders"])->name("admin.orders");
+    Route::get("/admin/order/{order_id}", [AdminOrderController::class,"orderDetails"])->name('admin.order-details');
+    Route::post('/admin/updateOrderSatus/{order_id}', [AdminOrderController::class,"updateStatus"])->name("updateOrderStatus");
+
+
+    //Blogs
+    Route::get("admin/blogs",[blogsController::class,"blogs"])->name("admin.blogs");
+    Route::get("admin/addBlog",[blogsController::class,"addBlog"])->name("admin.addBlog");
+    Route::post("admin/addBlogProcess",[blogsController::class,"addBlogProcess"])->name("admin.blogs.add");
+    Route::get("admin/editBlog/{id}",[blogsController::class,"editBlog"])->name("admin.blog.edit");
+    Route::post("admin/editBlogProcess/",[blogsController::class,"editBlogProcess"])->name("admin.blog.editBlogProcess");
+
+
+    //banner
+    Route::get("admin/banners",[bannerController::class,"banners"])->name("admin.banners");
+    Route::get("admin/addBanner",[bannerController::class,"addBanner"])->name("admin.addBanner");
+    Route::post("admin/addBannerProcess",[bannerController::class,"addBannerProcess"])->name("admin.addBannerProcess");
+    Route::get("admin/editBanner/{id}",[bannerController::class,"editBanner"])->name("admin.editBanner");
 
 
 });

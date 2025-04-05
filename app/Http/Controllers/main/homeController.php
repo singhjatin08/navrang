@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\main;
 
 use App\Http\Controllers\Controller;
+use App\Models\blogsModel;
 use App\Models\enquiryModel;
+use App\Models\product\productModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +16,14 @@ class homeController extends Controller
 {
     public function index()
     {
-        return view("main.index");
+        $productModel = new productModel();
+        $latestProducts = $productModel->latestProduct();
+        $featureProducts = $productModel->featureProducts();
+
+        $blogModel = new blogsModel();
+        $blogs = $blogModel->latestTwoBlogs();
+
+        return view("main.index", ['latestProducts' => $latestProducts, 'blogs' => $blogs, 'featureProducts' => $featureProducts]);
     }
     public function contact()
     {

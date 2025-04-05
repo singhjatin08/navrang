@@ -5,11 +5,11 @@ namespace App\Http\Controllers\main;
 use App\Http\Controllers\Controller;
 use App\Models\cartModel;
 use App\Models\user\userModel;
-use Cookie;
-use DB;
 use Illuminate\Http\Request;
-use Session;
-use Validator;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class orderController extends Controller
 {
@@ -29,6 +29,7 @@ class orderController extends Controller
             'billing_address' => 'required|string|max:255',
             'billing_state' => 'required|string|max:255',
             'billing_postcode' => 'required|string|max:255',
+            'payment_method'=>'required',
         ]);
 
         // If billing validation fails
@@ -146,6 +147,13 @@ class orderController extends Controller
 
         $order_id = "NOD0" . date('Y') . "0" . uniqid();
         $total_order_amount =  $request->input('total_order_amount');
+        $billing_address = $request->input('billing_address') . " , " . $request->input('billing_state') . " , " . $request->input('billing_country') . " ," . $request->input('billing_postcode');
+
+        if ($request->input('different_shipping_address') == "Yes") {
+            $shipping_address = $request->input('shipping_address') . " , " . $request->input('shipping_state') . " , " . $request->input('shipping_country') . " ," . $request->input('shipping_postcode');
+        } else {
+            $shipping_address = $billing_address;
+        }
         // Insert into t_orders
         $order = DB::table('t_orders')->insertGetId([
             'order_id' => $order_id,
@@ -153,9 +161,10 @@ class orderController extends Controller
             'billing_name' => $request->name,
             'billing_contact' => $request->phone,
             'billing_email' => $request->email,
-            'billing_address' => $request->input('billing_address') . " , " . $request->input('billing_state') . " , " . $request->input('billing_country') . " ," . $request->input('billing_postcode'),
-            'shipping_address' => $request->input('billing_address') . " , " . $request->input('billing_state') . " , " . $request->input('billing_country') . " ," . $request->input('billing_postcode'),
+            'billing_address' => $billing_address,
+            'shipping_address' => $shipping_address,
             'total_amount' => $total_order_amount,
+            'payment_method'=>$request->payment_method,
             'payment_status' => "Pending",
             'order_status' => "Pending",
             "order_note" => $request->input('order_note'),
@@ -163,15 +172,17 @@ class orderController extends Controller
 
         // Insert order items into t_order_items
         foreach ($cartItems as $item) {
+            $price = !empty($item->product_sale_price) ? $item->product_sale_price : $item->product_price;
+
             $insertItem = DB::table('t_order_items')->insertGetId([
                 'order_id' => $order_id,
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
-                'price' => $item->product_sale_price,
+                'price' => $price,
             ]);
         }
 
-        
+
         if ($insertItem) {
             DB::table('t_cart')->where('username', $userId)->delete();
         } else {

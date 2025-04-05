@@ -3,6 +3,7 @@
 namespace App\Models\category;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class categoryModel extends Model
 {
@@ -10,6 +11,7 @@ class categoryModel extends Model
     public $timestamps = true;
     protected $fillable = [
         'category_name',
+        'slug',
         'parent_id',
         'status'
     ];
@@ -17,4 +19,9 @@ class categoryModel extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function getAllCategory()
+    {
+        return DB::table('t_category')->where('status', '=', 1)->get();
+    }
 }

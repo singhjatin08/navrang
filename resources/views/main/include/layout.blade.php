@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="public/assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ URL('public/assets/images/favicon.png') }}" />
 
     <!-- CSS (Font, Vendor, Icon, Plugins & Style CSS files) -->
 
@@ -163,7 +163,7 @@
                                 <div class="mega-menu__banner">
                                     <a href="#">
                                         <div class="mega-menu__banner--image">
-                                            <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner"
+                                            <img src="{{ url('public/assets/images/megamenu-fashion-01.jpg') }}" alt="Fashion Banner"
                                                 width="470" height="475" />
                                         </div>
                                         <div class="mega-menu__banner--caption">
@@ -225,7 +225,7 @@
                             </div>
                         </li>
                         <li>
-                            <a href="{{ url('blogs') }}">
+                            <a href="{{ route('blogs') }}">
                                 <span>Blogs</span>
                             </a>
                         </li>
@@ -414,7 +414,7 @@
             <!-- Off Canvas Sidebar Banner Start -->
             <div class="offcanvas-sidebar__banner"
                 style="
-                background-image: url(public/assets/images/shop-sidebar-banner.jpg);
+                background-image: url({{ url('public/assets/images/shop-sidebar-banner.jpg') }});
             ">
                 <h3 class="banner-title">NEW NOW</h3>
                 <h4 class="banner-sub-title">WARM WOOL PREMIUM COAT</h4>
@@ -513,7 +513,7 @@
                             <div class="mega-menu__banner">
                                 <a href="#">
                                     <div class="mega-menu__banner--image">
-                                        <img src="public/assets/images/megamenu-fashion-01.jpg" alt="Fashion Banner"
+                                        <img src="{{ url('public/assets/images/megamenu-fashion-01.jpg') }}" alt="Fashion Banner"
                                             width="269" height="271" />
                                     </div>
                                     <div class="mega-menu__banner--caption">
@@ -591,7 +591,7 @@
                         </div>
                     </li>
                     <li>
-                        <a href="{{ url('/blogs') }}">
+                        <a href="{{ route('blogs') }}">
                             Blogs
                         </a>
                     </li>
@@ -770,7 +770,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="text-center text-md-end">
-                            <img src="public/assets/images/footer-payment-1.png" alt="Footer Payment" width="230"
+                            <img src="{{ url('public/assets/images/footer-payment-1.png') }}" alt="Footer Payment" width="230"
                                 height="17" loading="lazy" />
                         </div>
                     </div>
@@ -800,22 +800,22 @@
                                     <div class="swiper">
                                         <div class="swiper-wrapper">
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-01.png"
+                                                <img src="{{ url('public/assets/images/products/wines/product-single-01.png') }}"
                                                     alt="Product Single" width="742" height="778"
                                                     loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-02.png"
+                                                <img src="{{ url('public/assets/images/products/wines/product-single-02.png') }}"
                                                     alt="Product Single" width="742" height="778"
                                                     loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-03.png"
+                                                <img src="{{ url('public/assets/images/products/wines/product-single-03.png') }}"
                                                     alt="Product Single" width="742" height="778"
                                                     loading="lazy" />
                                             </div>
                                             <div class="product-single-slide-item swiper-slide">
-                                                <img src="public/assets/images/products/wines/product-single-04.png"
+                                                <img src="{{ url('public/assets/images/products/wines/product-single-04.png') }}"
                                                     alt="Product Single" width="742" height="778"
                                                     loading="lazy" />
                                             </div>

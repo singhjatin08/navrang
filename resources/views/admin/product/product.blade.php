@@ -72,6 +72,7 @@
                                             @endif
                                         </td>
                                         <td>
+                                            <a href="{{url('product-details')}}/{{$product->product_id}}" target="_blank" class="btn btn-sm btn-warning"><i class="fa fa-eye"></i></a>
                                             <a href="{{url('admin/updateProduct')}}/{{$product->id}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
                                             <a href="{{url('admin/deleteProduct')}}/{{$product->id}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                         </td>

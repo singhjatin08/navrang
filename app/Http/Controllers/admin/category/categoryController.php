@@ -33,11 +33,13 @@ class categoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'category_name' => 'required|string',
+            'slug' => 'required|string',
         ]);
 
         if ($validator->passes()) {
             $data = [
                 'category_name' => $request->input('category_name'),
+                'slug' => $request->input('slug'),
                 'parent_id' => $request->input('parent_category'),
                 'status' => $request->input('status')
             ];
@@ -69,11 +71,12 @@ class categoryController extends Controller
     public function updateCategory(Request $request, $cID)
     {
         if (!$cID) {
-            return redirect()->route('addCategory');
+            return redirect()->route('admin.category');
         }
 
         $validator = Validator::make($request->all(), [
             'category_name' => 'required|string',
+            'slug' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -94,6 +97,7 @@ class categoryController extends Controller
 
         $data = [
             'category_name' => $request->input('category_name'),
+            'slug' => $request->input('slug'),
             'parent_id' => $request->input('parent_category'),
             'status' => $request->input('status'),
         ];

@@ -18,8 +18,8 @@ class cartController extends Controller
 
     public function getCart()
     {
-        $cartItems = []; // Initialize to avoid undefined variable issues
-        $cartCount = 0; // Initialize cart count
+        $cartItems = []; 
+        $cartCount = 0; 
 
         if (Session::has('user') && Session::get('user') !== null) {
             $userId = Session::get('user')->username;

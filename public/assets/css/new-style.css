@@ -39,3 +39,7 @@ background-color: var(--color3);
 .header-mid-meta__item li a .badge, .header-mid-meta__item li button .badge{
     background-color: var(--color2);
 }
+
+.bg-cream{
+    background-color: var(--color1);
+}
