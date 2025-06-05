@@ -1,11 +1,17 @@
 @extends('main.include.layout')
+@section('meta')
+    @php
+        echo $meta->head_scripts;
+    @endphp
+    <title>Blogs - Navrangaroma Candles</title>
+
+@endsection
 @section('content')
     <div>
         <!-- Breadcrumb Start -->
-        <div class="breadcrumb-section"
-            style="
-                    background-image: url({{ url('public/assets/images/blog-page-header.jpg') }});
-                ">
+        <div class="breadcrumb-section" style="
+                        background-image: url({{ url('public/assets/images/blog-page-header.jpg') }});
+                    ">
             <div class="container-fluid custom-container">
                 <div class="breadcrumb-wrapper breadcrumb-white text-center">
                     <h2 class="breadcrumb-wrapper__title">
@@ -33,8 +39,7 @@
                                 <div class="blog-item-2">
                                     <div class="blog-item-2__image">
                                         <a href="{{ route('blog.detail', $blog->slug) }}">
-                                            <img src="{{ url($blog->feature_image) }}" alt="Blog" width="1012"
-                                                height="557" />
+                                            <img src="{{ url($blog->feature_image) }}" alt="Blog" width="1012" height="557" />
                                         </a>
                                     </div>
                                     <div class="blog-item-2__content">
@@ -58,8 +63,7 @@
                                         <p class="blog-item-2__content--description">
                                             {{ $blog->short_description }}
                                         </p>
-                                        <a class="blog-item-2__content--btn btn"
-                                            href="{{ route('blog.detail', $blog->slug) }}">
+                                        <a class="blog-item-2__content--btn btn" href="{{ route('blog.detail', $blog->slug) }}">
                                             Read more
                                         </a>
                                     </div>
@@ -78,8 +82,7 @@
                         <ul class="paginations-list-2">
                             <!-- Previous Page -->
                             <li>
-                                <a href="{{ $blogs->previousPageUrl() }}"
-                                    class="{{ $blogs->onFirstPage() ? 'disabled' : '' }}">
+                                <a href="{{ $blogs->previousPageUrl() }}" class="{{ $blogs->onFirstPage() ? 'disabled' : '' }}">
                                     <i class="lastudioicon-arrow-left"></i>
                                 </a>
                             </li>
@@ -87,8 +90,7 @@
                             <!-- Page Numbers -->
                             @foreach ($blogs->links()->elements[0] as $page => $url)
                                 <li>
-                                    <a href="{{ $url }}"
-                                        class="{{ $page == $blogs->currentPage() ? 'active' : '' }}">
+                                    <a href="{{ $url }}" class="{{ $page == $blogs->currentPage() ? 'active' : '' }}">
                                         {{ $page }}
                                     </a>
                                 </li>
@@ -96,8 +98,7 @@
 
                             <!-- Next Page -->
                             <li>
-                                <a href="{{ $blogs->nextPageUrl() }}"
-                                    class="{{ $blogs->hasMorePages() ? '' : 'disabled' }}">
+                                <a href="{{ $blogs->nextPageUrl() }}" class="{{ $blogs->hasMorePages() ? '' : 'disabled' }}">
                                     <i class="lastudioicon-arrow-right"></i>
                                 </a>
                             </li>
@@ -163,12 +164,13 @@
                         Proin volutpat vitae libero at tincidunt. Maecenas sapien
                         lectus, vehicula vel euismod sed, vulputate
                     </p>
-                    <form action="#">
+                    <form action="#" class="subscribeForm">
                         <div class="newsletter-form-style-1">
                             <input type="text" placeholder="Enter your email address..." />
                             <button>Subscribe</button>
                         </div>
                     </form>
+                    <div class="error email_err"></div>
                 </div>
                 <!-- Newsletter Wrapper End -->
             </div>

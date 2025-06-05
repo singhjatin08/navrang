@@ -1,4 +1,9 @@
 @extends('main.include.layout')
+@section('meta')
+    @php
+        echo $blog->seo_tags;
+    @endphp
+@endsection
 @section('content')
     <div style="margin-top: 145px;">
         <!-- Breadcrumbs Start -->

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jay Stud Farm - Login</title>
+    <title>Navrang Admin - Login</title>
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
@@ -30,7 +30,7 @@
                 <a href="index.php" class="h1"><img src="{{url('public/assets/images/logo.png')}}" width="200" alt="Logo"></a>
             </div>
             <div class="card-body">
-                <h1 class="text-center"><b>JSF </b>Dashboard</h1>
+                <h2 class="text-center"><b>Navrang </b>Dashboard</h2>
                 <form action="" method="post" id="login">
                     <p class="success_msg success"></p>
                     <p class="error_msg error"></p>

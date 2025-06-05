@@ -17,6 +17,11 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <a href="{{ route('admin.orders') }}"><button class="btn btn-brown">Back</button></a>
+                </div>
+            </div>
             <div class="card card-outline-brown">
                 <div class="card-header">
                     <h5 class="m-0">Update Order Status</h5>
@@ -51,7 +56,8 @@
                                     <select name="payment_status" id="payment_status" class="form-control form-select">
                                         <option value="Pending" {{ $order->payment_status == 'Pending' ? 'selected' : '' }}>
                                             Pending</option>
-                                        <option value="Success" {{ $order->payment_status == 'Success' ? 'selected' : '' }}>
+                                        <option value="Success"
+                                            {{ $order->payment_status == 'Success' ? 'selected' : '' }}>
                                             Success</option>
                                         <option value="Failed" {{ $order->payment_status == 'Failed' ? 'selected' : '' }}>
                                             Failed</option>
@@ -104,6 +110,9 @@
                             <div class="col-sm-4 invoice-col">
                                 <b>Order ID:</b> {{ $order->order_id }}<br>
                                 <b>Payment Status:</b> {{ $order->payment_status }}<br>
+                                @if ($order->payment_status === 'paid')
+                                    <b>Payment ID:</b> {{ $order->payment_id }}<br>
+                                @endif
                                 <b>Order Status:</b> {{ $order->order_status }}<br>
                             </div>
                         </div>
@@ -209,24 +218,25 @@
                             title: data.message
                         }).then(() => {
                             window.location.reload();
-                        }) 
+                        })
                     } else {
                         Swal.fire({
                             icon: data.status,
                             title: data.message
-                        }) 
+                        })
                         printError(data.error);
                     }
                 },
                 error: function(error) {
                     Swal.fire({
-                            icon: data.status,
-                            title: data.message
-                        }) 
+                        icon: data.status,
+                        title: data.message
+                    })
                     console.log(error.responseJSON);
                 }
             });
         });
+
         function printError(err) {
             $.each(err, function(key, value) {
                 $("." + key + "_err").text(value)

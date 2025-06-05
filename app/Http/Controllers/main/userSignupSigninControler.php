@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\main;
 
 use App\Http\Controllers\Controller;
+use App\Mail\forgetUserPasswordEmail;
 use App\Models\cartModel;
 use App\Models\orderModel;
 use App\Models\user\userModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,9 +19,13 @@ class userSignupSigninControler extends Controller
 
     public function myAccount()
     {
-        $orderModel = new orderModel();
-        $orders = $orderModel->getOrderDetailbyUserID(Session::get("user")->username);
-        return view("main.my-account", ['orders' => $orders]);
+        if (Session::has("user")) {
+            $orderModel = new orderModel();
+            $orders = $orderModel->getOrderDetailbyUserID(Session::get("user")->username);
+            return view("main.my-account", ['orders' => $orders]);
+        } else {
+            return view("main.my-account");
+        }
     }
 
     public function viewOrderDetails($user_id)
@@ -188,5 +194,117 @@ class userSignupSigninControler extends Controller
     {
         Session::forget('user');
         return redirect()->route('home');
+    }
+
+
+    public function forgetPassword()
+    {
+        return view("main.forget-password");
+    }
+
+    public function forgetPasswordProcess(Request $request)
+    {
+        $result = [];
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string',
+        ]);
+
+        if ($validator->passes()) {
+            $username = $request->input('username');
+
+            $user = DB::table('t_users')
+                ->where(function ($query) use ($username) {
+                    $query->where('email', $username)
+                        ->orWhere('username', $username);
+                })
+                ->first();
+
+            if ($user) {
+
+
+
+                if ($user->status == 1) {
+
+
+
+                    $token = uniqid();
+                    $name = $user->name;
+
+                    DB::table('t_users')->where('username', $user->username)->update(['token' => $token]);
+
+                    $url = url("set-password/" . $token . "/" . $user->username);
+                    Mail::to($user->email)->send(new forgetUserPasswordEmail($name, $url));
+                    $result = [
+                        "status" => "success",
+                        "message" => "Password reset link sent to your email!",
+                    ];
+                    return response()->json($result);
+                } else {
+                    $result = [
+                        "status" => "error",
+                        "message" => "Account deactivated!",
+                    ];
+                    return response()->json($result);
+                }
+            } else {
+                $result = [
+                    "status" => "error",
+                    "message" => "User not found."
+                ];
+                return response()->json($result);;
+            }
+        } else {
+            $result = [
+                "status" => "error",
+                "error" => $validator->errors()
+            ];
+            return response()->json($result);
+        }
+    }
+
+    public function setPassword($token, $username)
+    {
+        $user = DB::table('t_users')->where(['username' => $username, 'token' => $token])->first();
+        if ($user) {
+            return view("main.set-password", ['token' => $token,'username' => $username]);
+        } else {
+            return redirect()->route('login');
+        }
+    }
+    public function setPasswordProcess(Request $request)
+    {
+        $result = [];
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|string',
+            'confirm_password' => 'required|string',
+            'token' => 'required|string',
+            'username' => 'required|string',
+        ]);
+
+        if ($validator->passes()) {
+            if($request->input('new_password') !== $request->input('confirm_password')){
+                $result = [
+                    "status" => "error",
+                    "message" => "Password and confirm password do not match!",
+                ];
+                return response()->json($result);
+            }
+            $password = md5($request->input('new_password'));
+            $token = $request->input('token');
+            $username = $request->input('username');
+
+            DB::table('t_users')->where(['username' => $username, 'token' => $token])->update(['password' => $password, 'token' => null]);
+            $result = [
+                "status" => "success",
+                "message" => "Password updated successfully!",
+            ];
+            return response()->json($result);
+        } else {
+            $result = [
+                "status" => "error",
+                "error" => $validator->errors()
+            ];
+            return response()->json($result);
+        }
     }
 }

@@ -65,9 +65,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="sale_price">Sale Price</label>
-                                        <input type="text" name="sale_price" id="sale_price" class="form-control">
-                                        <div class="sale_price_err error"></div>
+                                        <label for="product_discount_percentage">Product Discount Percentage</label>
+                                        <input type="number" name="product_discount_percentage" id="product_discount_percentage" class="form-control" max="100" min="0" value="0">
+                                        <div class="product_discount_percentage_err error"></div>
                                     </div>
                                 </div>
 
@@ -87,6 +87,15 @@
                                         <div class="description_err error"></div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="seo_tags_and_scripts">SEO Tags & Scripts</label>
+                                        <textarea name="seo_tags_and_scripts" rows="6" class="form-control"></textarea>
+                                        <div class="seo_tags_and_scripts_err error"></div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="row mt-3 mb-3 bg-light py-3 border border-grey">
                                         <div class="col-md-6">
@@ -123,6 +132,21 @@
                                         <div class="error feature_product_err"></div>
                                     </div>
                                 </div>
+                                
+                                <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label for="stock">In Stock</label>
+                                            <br>
+                                            <span class="d-inline-block mx-2">
+                                                <input type="radio" checked name="stock" value="1" class="mr-2"> Yes
+                                            </span>
+                                            <span class="d-inline-block mx-2">
+                                                <input type="radio" name="stock" value="0" class="mr-2"> No
+                                            </span>
+                                            <div class="error status_err"></div>
+                                        </div>
+                                    </div>
+                                
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="status">Status</label>

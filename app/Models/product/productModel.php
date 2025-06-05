@@ -14,11 +14,12 @@ class productModel extends Model
         'product_title',
         'product_category',
         'product_price',
-        'product_sale_price',
+        'product_discount_percentage',
         'product_short_description',
         'product_description',
         'product_image',
         'feature_product',
+        'seo_tags',
         'status',
         'created_by',
     ];
@@ -78,10 +79,11 @@ class productModel extends Model
             ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
             ->where([
                 "t_products.status" => 1,
+                "t_products.stock" => 1,
                 "t_products.feature_product" => null,
             ])
             ->select("t_products.*", "c.category_name")
-            ->limit(8)
+            ->limit(10)
             ->orderBy("id", "desc")
             ->get();
 
@@ -108,6 +110,7 @@ class productModel extends Model
             ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
             ->where([
                 "t_products.status" => 1,
+                "t_products.stock" => 1,
                 "t_products.feature_product" => "Yes",
             ])
             ->select("t_products.*", "c.category_name")
@@ -141,7 +144,7 @@ class productModel extends Model
             ])
             ->select("t_products.*", "c.category_name")
             ->orderBy('t_products.id', 'DESC')
-            ->paginate(9);
+            ->paginate(12);
 
         if (!$products->isEmpty()) {
             foreach ($products as $product) {
@@ -165,7 +168,7 @@ class productModel extends Model
             ->leftJoin('t_category as c', 't_products.product_category', '=', 'c.id')
             ->select('t_products.*', 'c.category_name')
             ->orderBy('t_products.id', 'DESC')
-            ->paginate(9);
+            ->paginate(12);
             return $products;
     }
 }

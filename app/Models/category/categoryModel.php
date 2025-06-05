@@ -13,6 +13,7 @@ class categoryModel extends Model
         'category_name',
         'slug',
         'parent_id',
+        'meta_tags',
         'status'
     ];
     protected $dates = [

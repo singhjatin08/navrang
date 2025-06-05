@@ -15,7 +15,7 @@ class categoryController extends Controller
         $categories = DB::table('t_category')
             ->select('*')
             ->get();
-        return view("admin/category.category", ['categories' => $categories]);
+        return view("admin.category.category", ['categories' => $categories]);
     }
 
 
@@ -41,6 +41,7 @@ class categoryController extends Controller
                 'category_name' => $request->input('category_name'),
                 'slug' => $request->input('slug'),
                 'parent_id' => $request->input('parent_category'),
+                'meta_tags' => $request->input('meta_tags'),
                 'status' => $request->input('status')
             ];
             if ($insert = DB::table('t_category')->insert($data)) {
@@ -99,6 +100,7 @@ class categoryController extends Controller
             'category_name' => $request->input('category_name'),
             'slug' => $request->input('slug'),
             'parent_id' => $request->input('parent_category'),
+            'meta_tags' => $request->input('meta_tags'),
             'status' => $request->input('status'),
         ];
         $update = DB::table('t_category')->where('id', $cID)->update($data);

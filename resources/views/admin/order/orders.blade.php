@@ -21,16 +21,17 @@
                 <h5 class="mb-0">Orders</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered dataTable">
+                <table class="table table-bordered dataTable text-xs">
                     <thead>
                         <tr>
                             <th>S.No</th>
-                            <th>Product Image</th>
+                            <th>Image</th>
                             <th>Order ID</th>
                             <th>Username</th>
                             <th>Amount</th>
                             <th>Billing Address</th>
                             <th>Shipping Address</th>
+                            <th>Payment Method</th>
                             <th>Order Status</th>
                             <th>Payment Status</th>
                             <th>Order Date</th>
@@ -57,6 +58,7 @@
                                 <td>₹ {{ $order->total_amount }}</td>
                                 <td class="text-capitalize">{{ $order->billing_address }}</td>
                                 <td class="text-capitalize">{{ $order->shipping_address }}</td>
+                                <td>{{ $order->payment_method }}</td>
                                 <td>{{ $order->order_status }}</td>
                                 <td>{{ $order->payment_status }}</td>
                                 <td class="text-uppercase">{{ $order->order_date_time ? date('d-M-Y | H:i A', strtotime($order->order_date_time)) : 'N/A' }}</td>

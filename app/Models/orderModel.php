@@ -21,6 +21,7 @@ class orderModel extends Model
         'order_note',
         'shipping_method',
         'payment_method',
+        'payment_id',
         'payment_status',
         'order_status',
         'order_date_time',

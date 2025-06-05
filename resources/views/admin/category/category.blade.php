@@ -44,8 +44,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="">Category Name</label>
-                                            <input type="text" name="category_name" id="category_name"
-                                                class="form-control">
+                                            <input type="text" name="category_name" id="category_name" class="form-control">
                                             <div class="category_name_err error"></div>
                                         </div>
                                     </div>
@@ -64,6 +63,13 @@
                                                 <option value="">Select Parent Category</option>
                                             </select>
                                             <div class="parent_category_err error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="meta_tags">Meta Tags</label>
+                                            <textarea name="meta_tags" id="meta_tags" class="form-control"
+                                                rows="4"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -88,8 +94,12 @@
                         <!-- Update Category Form -->
                         <form id="updateCategoryForm">
                             @csrf
-                            <div class="card-header">
-                                <p class="m-0 fw-bold">Update Category</p>
+                            <div class="card-header py-0 pt-2 bg-grey">
+                                <p class="mt-0 fw-bold d-inline-block">
+                                    Update Category
+                                </p>
+                                <a href="{{ route('admin.category') }}"
+                                    class="btn btn-sm btn-danger float-right px-4">Cancel</a>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -114,6 +124,13 @@
                                                 <option value="">Select Parent Category</option>
                                             </select>
                                             <div class="parent_category_err error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="meta_tags">Meta Tags</label>
+                                            <textarea name="meta_tags" id="meta_tags" class="form-control"
+                                                rows="4"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -164,7 +181,7 @@
     </div>
 
     <script>
-        $(document).on("keyup", "input[name='category_name']", function() {
+        $(document).on("keyup", "input[name='category_name']", function () {
             var value = $(this).val();
             var outString = value.trim().replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase();
 
@@ -173,13 +190,13 @@
         });
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Hide the update form initially
             $("#updateCategoryForm").hide();
             $("#addCategoryForm").show();
 
             // Submit form for adding category
-            $("#addCategoryForm").submit(function(e) {
+            $("#addCategoryForm").submit(function (e) {
                 e.preventDefault();
                 var form = $("#addCategoryForm")[0];
                 var data = new FormData(form);
@@ -191,7 +208,7 @@
                     data: data,
                     processData: false,
                     contentType: false,
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status == 'success') {
                             Swal.fire({
                                 icon: data.status,
@@ -208,7 +225,7 @@
                         }
                         $("#submitBtn").prop("disabled", false);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error.responseJSON);
                         $("#submitBtn").prop("disabled", false);
                     }
@@ -216,13 +233,13 @@
             });
 
             // Edit button click
-            $(document).on('click', '.edit-btn', function() {
+            $(document).on('click', '.edit-btn', function () {
                 var categoryId = $(this).data('id');
 
                 $.ajax({
                     type: "GET",
                     url: "{{ url('admin/editCategory') }}/" + categoryId,
-                    success: function(data) {
+                    success: function (data) {
                         // Show update form and hide add form
                         $("#updateCategoryForm").show();
                         $("#addCategoryForm").hide();
@@ -232,18 +249,19 @@
                         $("#updateCategoryForm .slug").val(data.slug);
                         $("#updateCategoryForm .parent_category").val(data.parent_id).trigger(
                             'change');
+                        $("#updateCategoryForm .meta_tags").val(data.meta_tags);
                         $("#updateCategoryForm .status").val(data.status);
                         $("#updateCategoryForm .category_id").val(data.id);
                         $("#updateCategoryForm").attr('data-id', data.id);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error.responseJSON);
                     }
                 });
             });
 
             // Submit form for updating category
-            $("#updateCategoryForm").submit(function(e) {
+            $("#updateCategoryForm").submit(function (e) {
                 e.preventDefault();
                 var form = $("#updateCategoryForm")[0];
                 var data = new FormData(form);
@@ -254,7 +272,7 @@
                     data: data,
                     processData: false,
                     contentType: false,
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data);
                         if (data.status == 'success') {
                             Swal.fire({
@@ -269,20 +287,20 @@
                             printError(data.error);
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error.responseJSON);
                     }
                 });
             });
 
-            $(document).on('click', '.delete-btn', function() {
+            $(document).on('click', '.delete-btn', function () {
                 var categoryId = $(this).data('id');
                 var isConfirmed = confirm("Are you sure you want to delete this Category?");
                 if (isConfirmed) {
                     $.ajax({
                         type: "GET",
                         url: "{{ url('admin/deleteCategory') }}/" + categoryId,
-                        success: function(data) {
+                        success: function (data) {
                             if (data.status == "success") {
                                 loadCategories()
                                 Swal.fire({
@@ -296,7 +314,7 @@
                                 })
                             }
                         },
-                        error: function(error) {
+                        error: function (error) {
                             console.log(error.responseJSON);
                         }
                     });
@@ -309,12 +327,12 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ Route('admin.getAllCategory') }}",
-                    success: function(data) {
+                    success: function (data) {
                         var select = $('#parent_category');
                         var selectUpdate = $('.parent_category');
                         select.html('<option value="">Select Parent Category</option>');
                         selectUpdate.html('<option value="">Select Parent Category</option>');
-                        data.forEach(function(category) {
+                        data.forEach(function (category) {
                             select.append(
                                 `<option value="${category.id}">${category.category_name}</option>`
                             );
@@ -325,22 +343,22 @@
 
                         var table = $('.categoryList');
                         var tableBody = table.find('tbody').html('');
-                        data.forEach(function(category, index) {
+                        data.forEach(function (category, index) {
                             var row = `<tr>
-                                                                <td>${index + 1}</td>
-                                                                <td>${category.category_name}</td>
-                                                                <td>${category.slug}</td>
-                                                                <td>${category.parent_id ? category.parent_name : 'N/A'}</td>
-                                                                <td>${category.status === '1' ? 'Active' : category.status === '2' ? 'Draft' : category.status === '0' ? 'Inactive' : 'N/A'}</td>
-                                                                <td>
-                                                                    <button class="btn btn-primary btn-sm border edit-btn" data-id="${category.id}">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                    <button data-id="${category.id}" class="btn btn-danger btn-sm delete-btn">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>`;
+                                                                    <td>${index + 1}</td>
+                                                                    <td>${category.category_name}</td>
+                                                                    <td>${category.slug}</td>
+                                                                    <td>${category.parent_id ? category.parent_name : 'N/A'}</td>
+                                                                    <td>${category.status === '1' ? 'Active' : category.status === '2' ? 'Draft' : category.status === '0' ? 'Inactive' : 'N/A'}</td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary btn-sm border edit-btn" data-id="${category.id}">
+                                                                            <i class="fa fa-edit"></i>
+                                                                        </button>
+                                                                        <button data-id="${category.id}" class="btn btn-danger btn-sm delete-btn">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>`;
                             tableBody.append(row);
                         });
                         table.DataTable();
@@ -353,7 +371,7 @@
         });
 
         function printError(err) {
-            $.each(err, function(key, value) {
+            $.each(err, function (key, value) {
                 $("." + key + "_err").text(value)
             })
         }

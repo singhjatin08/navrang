@@ -1,4 +1,10 @@
 @extends('main.include.layout')
+@section('meta')
+    @php
+        echo $meta->head_scripts;
+    @endphp
+    <title>Cart - Navrangaroma Candles</title>
+@endsection
 @section('content')
     <div style="margin-top: 145px;">
         <!-- Breadcrumb Start -->
@@ -22,17 +28,6 @@
                 <div class="cart-wrapper">
                     <!-- Cart Form Start-->
                     <div class="cart-form">
-                        <!-- Free Shipping Goal Start-->
-                        <div class="free-shipping-goal">
-                            <div class="free-shipping-goal__label text-center">
-                                Buy $3.03 more to enjoy
-                                <strong>FREE Shipping</strong>
-                            </div>
-                            <div class="free-shipping-goal__loading-bar">
-                                <div class="load-percent" style="width: 98.49%"></div>
-                            </div>
-                        </div>
-                        <!-- Free Shipping Goal Start-->
 
                         <!-- Cart Table Start-->
                         <div class="cart-table table-responsive">
@@ -60,52 +55,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($cartItems as $item)
-                                        <tr class="cart-item">
-                                            <td class="cart-product-remove">
-                                                <a href="#" class="remove">×</a>
-                                            </td>
 
-                                            <td class="cart-product-thumbnail">
-                                                <a href="product-single.html">
-                                                    <img src="{{ $item->product_image }}" alt="Product" width="70"
-                                                        height="89">
-                                                </a>
-                                            </td>
-
-                                            <td class="cart-product-name">
-                                                <a href="product-single.html">
-                                                    {{ $item->product_title }}
-                                                </a>
-                                            </td>
-
-                                            <td class="cart-product-price text-md-center" data-title="Price">
-                                                <span class="price-amount">
-                                                    <ins>₹<strike>{{ $item->product_price }}</strike>
-                                                        {{ $item->product_sale_price }}</ins>
-                                                </span>
-                                            </td>
-
-                                            <td class="cart-product-quantity text-md-center" data-title="Quantity">
-                                                <div class="cart-table__quantity product-quantity">
-                                                    <button type="button" class="decrease" aria-label="delete">
-                                                        <i class="lastudioicon-i-delete-2"></i>
-                                                    </button>
-                                                    <input class="quantity-input" type="text"
-                                                        value="{{ $item->quantity }}">
-                                                    <button type="button" class="increase" aria-label="add">
-                                                        <i class="lastudioicon-i-add-2"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-
-                                            <td class="cart-product-subtotal text-md-center" data-title="Subtotal">
-                                                <span class="price-amount">
-                                                    $69.99
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -211,12 +161,13 @@
                         Proin volutpat vitae libero at tincidunt. Maecenas sapien
                         lectus, vehicula vel euismod sed, vulputate
                     </p>
-                    <form action="#">
+                    <form action="#" class="subscribeForm">
                         <div class="newsletter-form-style-1">
-                            <input type="text" placeholder="Enter your email address...">
+                            <input type="text" placeholder="Enter your email address..." />
                             <button>Subscribe</button>
                         </div>
                     </form>
+                    <div class="error email_err"></div>
                 </div>
                 <!-- Newsletter Wrapper End -->
             </div>

@@ -79,10 +79,10 @@
 
 
         <aside class="main-sidebar elevation-4 sidebar-light-brown">
-            <a href="index.php" class="brand-link bg-brown">
+            <a href="index.php" class="brand-link bg-light">
                 <img src="{{url('public/admin_assets/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">NAVRANG</span>
+                <span class="brand-text font-weight-light"><img src="{{ url('public/assets/images/logo.png') }}" alt="Logo" width="120"></span>
             </a>
 
             <div class="sidebar bg-light">
@@ -93,7 +93,7 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{Session::get('admin')->name}}</a>
+                        <a href="#" class="d-block">ADMIN</a>
                     </div>
                 </div>
 
@@ -123,6 +123,22 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('admin.enquiry')}}" class="nav-link">
+                                <i class="nav-icon fa-brands fa-wpforms"></i>
+                                <p>
+                                    Enquiry
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.bulkRateEnquiry')}}" class="nav-link">
+                                <i class="nav-icon fa-brands fa-wpforms"></i>
+                                <p>
+                                    Bulk Rate Enquiry
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('admin.products')}}" class="nav-link">
                                 <i class="nav-icon fa-brands fa-buromobelexperte"></i>
                                 <p>
@@ -138,7 +154,14 @@
                                 </p>
                             </a>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a href="{{route('reviews')}}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-star"></i>
+                                <p>
+                                    Reviews
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{route('admin.blogs')}}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-newspaper"></i>
@@ -157,10 +180,26 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('admin.banners')}}" class="nav-link">
+                                <i class="nav-icon fas fa-image"></i>
+                                <p>
+                                    Banners
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('admin.users')}}" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.metaTags')}}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-hashtag"></i>
+                                <p>
+                                    Meta
                                 </p>
                             </a>
                         </li>
@@ -188,7 +227,7 @@
                     var year = new Date();
                     document.write(year.getFullYear());
                 </script>
-                <a href="#">Jay Stud Farm</a>.
+                <a href="#">NAVRANG</a>.
             </strong>
             All rights reserved.
         </footer>

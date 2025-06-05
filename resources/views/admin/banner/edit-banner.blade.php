@@ -4,12 +4,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h4 class="m-0">Add Banner</h4>
+                    <h4 class="m-0">Update Banner</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Add Banner</li>
+                        <li class="breadcrumb-item active">Update Banner</li>
                     </ol>
                 </div>
             </div>
@@ -21,7 +21,7 @@
             @csrf
             <div class="card card-outline-brown">
                 <div class="card-header bg-grey">
-                    <h5 class="mb-0">Add Banner</h5>
+                    <h5 class="mb-0">Update Banner</h5>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
@@ -55,22 +55,27 @@
                         </div>
                         <div class="error banner_image_err"></div>
                         <div class="col-md-6 p-0" id="preview">
-                            <img src="{{ url($banner->banner_image) }}" class="mt-3">
+                            <img src="{{ url($banner->banner_image) }}" class="mt-3 img-fluid">
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
                         <br>
-                        <span class="d-inline-block mx-2"><input type="radio"
-                                @if ($banner->status == 1) checked @endif name="status" value="1"
-                                class="mr-2"> Active</span>
-                        <span class="d-inline-block mx-2"><input type="radio" @if ($banner->status !== 0) checked @endif
-                                name="status" value="2" class="mr-2"> Inactive</span>
+                        <span class="d-inline-block mx-2">
+                            <input type="radio" name="status" value="1" class="mr-2"
+                                @if ($banner->status == 1) checked @endif> Active
+                        </span>
+                        <span class="d-inline-block mx-2">
+                            <input type="radio" name="status" value="2" class="mr-2"
+                                @if ($banner->status != 1) checked @endif> Inactive
+                        </span>
+                        
                         <div class="error status_err"></div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" id="submitBtn" class="btn btn-brown float-right">Add Banner</button>
+                    <input name="banner_id" type="hidden" value="{{ $banner->id }}">
+                    <button type="submit" id="submitBtn" class="btn btn-brown float-right">Update Banner</button>
                 </div>
             </div>
         </form>
@@ -85,7 +90,7 @@
                 $("#submitBtn").prop("disabled", true);
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.addBannerProcess') }}",
+                    url: "{{ route('admin.updateBannerProcess') }}",
                     data: data,
                     processData: false,
                     contentType: false,

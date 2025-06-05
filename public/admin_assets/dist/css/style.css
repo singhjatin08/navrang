@@ -6,6 +6,9 @@
     --color3: #A43861;
     --grey: #C2C2C2;
 }
+body{
+    font-size: 14px;
+}
 
 .bg-cream {
     background-color: var(--color1) !important;
@@ -14,7 +17,12 @@
 .bg-grey{
     background-color: var(--grey) !important;
 }
-
+.border-brown{
+    border:1px solid var(--color2) !important;
+}
+.text-brown{
+    color: var(--color2) !important ;
+}
 .btn-brown {
     background-color: var(--color2);
     color: var(--white);
@@ -46,7 +54,9 @@
     font-size: 12px;
 }
 
-
+div.dt-container.dt-empty-footer tbody > tr> *{
+    vertical-align: middle;
+}
 .product-image-box {
     background: #fff;
     min-height: 200px;

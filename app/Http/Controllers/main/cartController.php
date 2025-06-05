@@ -17,66 +17,98 @@ class cartController extends Controller
     }
 
     public function getCart()
-    {
-        $cartItems = []; 
-        $cartCount = 0; 
+{
+    $cartItems = [];
+    $cartCount = 0;
+    $subtotal = 0;
+    $tax = 50; // You can adjust this later
+    $total = 0;
 
-        if (Session::has('user') && Session::get('user') !== null) {
-            $userId = Session::get('user')->username;
+    if (Session::has('user') && Session::get('user') !== null) {
+        $userId = Session::get('user')->username;
 
-            $cartItems = DB::table('t_cart as c')
-                ->join('t_products as p', 'c.product_id', '=', 'p.product_id')
-                ->where('c.username', $userId)
-                ->select('c.product_id', 'p.product_title', 'p.product_price', 'p.product_sale_price', 'c.quantity', 'p.product_image')
-                ->get();
+        $cartItems = DB::table('t_cart as c')
+            ->join('t_products as p', 'c.product_id', '=', 'p.product_id')
+            ->where('c.username', $userId)
+            ->select('c.product_id', 'p.product_title', 'p.product_price', 'p.product_discount_percentage', 'c.quantity', 'p.product_image')
+            ->get();
 
-            $cartCount = $cartItems->count(); // Get the count of items
-        } else {
-            $cart = json_decode(Cookie::get('cart', '[]'), true);
-            if (!is_array($cart)) {
-                $cart = [];
+        $cartCount = $cartItems->count();
+
+        foreach ($cartItems as $item) {
+            $price = $item->product_discount_percentage ?? $item->product_price;
+            $subtotal += $price * $item->quantity;
+        }
+
+    } else {
+        $cart = json_decode(Cookie::get('cart', '[]'), true);
+        if (!is_array($cart)) {
+            $cart = [];
+        }
+
+        // Merge duplicates by product_id
+        $mergedCart = [];
+        foreach ($cart as $item) {
+            $id = $item['product_id'];
+            if (isset($mergedCart[$id])) {
+                $mergedCart[$id]['quantity'] += $item['quantity'];
+            } else {
+                $mergedCart[$id] = $item;
             }
-            if (!empty($cart)) {
-                $productIds = array_column($cart, 'product_id');
+        }
+        $mergedCart = array_values($mergedCart);
 
-                if (!empty($productIds)) {
-                    $products = DB::table('t_products')
-                        ->whereIn('product_id', $productIds)
-                        ->select('product_id', 'product_title', 'product_price', 'product_sale_price', 'product_image')
-                        ->get()
-                        ->keyBy('product_id');
+        $productIds = array_column($mergedCart, 'product_id');
 
-                    foreach ($cart as &$item) {
-                        if (isset($products[$item['product_id']])) {
-                            $product = $products[$item['product_id']];
-                            $item['product_title'] = $product->product_title;
-                            $item['product_price'] = $product->product_price;
-                            $item['product_sale_price'] = $product->product_sale_price;
-                            $item['product_image'] = $product->product_image;
-                        }
-                    }
-                    $cartItems = $cart;
-                    $cartCount = count($cartItems); // Count cart items from cookies
+        if (!empty($productIds)) {
+            $products = DB::table('t_products')
+                ->whereIn('product_id', $productIds)
+                ->select('product_id', 'product_title', 'product_price', 'product_discount_percentage', 'product_image')
+                ->get()
+                ->keyBy('product_id');
+
+            foreach ($mergedCart as &$item) {
+                if (isset($products[$item['product_id']])) {
+                    $product = $products[$item['product_id']];
+                    $item['product_title'] = $product->product_title;
+                    $item['product_price'] = $product->product_price;
+                    $item['product_discount_percentage'] = $product->product_discount_percentage;
+                    $item['product_image'] = $product->product_image;
+
+                    $price = $product->product_discount_percentage ?? $product->product_price;
+                    $subtotal += $price * $item['quantity'];
                 }
             }
-        }
 
-        if (!empty($cartItems)) {
-            return response()->json([
-                'status' => "success",
-                'message' => 'Cart items retrieved successfully',
-                'count' => $cartCount, // Add count to response
-                'data' => $cartItems,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => "error",
-                'message' => 'No products found in the cart',
-                'count' => 0, // Cart is empty, so count is 0
-                'data' => [],
-            ]);
+            $cartItems = $mergedCart;
+            $cartCount = count($cartItems);
         }
     }
+
+    $total = $subtotal + $tax;
+
+    if (!empty($cartItems)) {
+        return response()->json([
+            'status' => "success",
+            'message' => 'Cart items retrieved successfully',
+            'count' => $cartCount,
+            'data' => $cartItems,
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'total' => $total,
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => "error",
+            'message' => 'No products found in the cart',
+            'count' => 0,
+            'data' => [],
+            'subtotal' => 0,
+            'tax' => 0,
+            'total' => 0,
+        ]);
+    }
+}
 
     public function addToCart(Request $request)
     {
@@ -200,4 +232,5 @@ class cartController extends Controller
             ]);
         }
     }
+
 }

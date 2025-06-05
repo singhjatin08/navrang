@@ -29,6 +29,8 @@
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Message</th>
+                            <th>Created At</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     @php
@@ -41,6 +43,11 @@
                             <td>{{ $item->phone }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->message }}</td>
+                            <td>{{ $item->created_at }}</td>
+                            <td>
+                                <a href="#" data-id="{{ $item->id }}"
+                                    class="btn btn-light text-danger border border-danger delete-btn"><i class="fas fa-trash"></i></a>
+                            </td>
                         </tr>
                         @php $i++; @endphp
                     @endforeach
@@ -48,4 +55,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).on('click', '.delete-btn', function() {
+            var EnquiryId = $(this).data('id');
+            var isConfirmed = confirm("Are you sure you want to delete this Enquiry?");
+            if (isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('admin/deleteEnquiry') }}/" + EnquiryId,
+                    success: function(data) {
+                        if (data.status == "success") {
+                            Swal.fire({
+                                icon: data.status,
+                                title: data.message
+                            }).then(() => {
+                                window.location.reload();
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: data.status,
+                                title: data.message
+                            })
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error.responseJSON);
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    </script>
 @endsection

@@ -52,6 +52,7 @@ class blogsController extends Controller
                 'tags' => $request->input('tags'),
                 'author' => Session::get('admin')->name,
                 'feature_image' => $path,
+                'seO_tags' => $request->input('seo_tags_and_scripts'),
                 'status' => $request->input('status')
             ];
             if ($insert = DB::table('t_blogs')->insertGetId($data)) {
@@ -113,6 +114,7 @@ class blogsController extends Controller
                 'category' => $request->input('category'),
                 'tags' => $request->input('tags'),
                 'author' => Session::get('admin')->name,
+                'seO_tags' => $request->input('seo_tags_and_scripts'),
                 'status' => $request->input('status')
             ];
 

@@ -46,11 +46,13 @@ class productController extends Controller
                 'product_title' => $request->input('product_title'),
                 'product_category' => $request->input('product_category'),
                 'product_price' => $request->input('price'),
-                'product_sale_price' => $request->input('sale_price'),
+                'product_discount_percentage' => $request->input('product_discount_percentage'),
                 'product_short_description' => $request->input('short_description'),
                 'product_description' => $request->input('description'),
                 'product_image' => $path,
                 'feature_product' => $request->input('feature_product'),
+                'stock' => $request->input('stock'),
+                'seo_tags' => $request->input('seo_tags_and_scripts'),
                 'created_by' => Session::get('admin')->username,
                 'status' => $request->input('status')
             ];
@@ -136,10 +138,12 @@ class productController extends Controller
             'product_title' => $request->input('product_title'),
             'product_category' => $request->input('product_category'),
             'product_price' => $request->input('price'),
-            'product_sale_price' => $request->input('sale_price'),
+            'product_discount_percentage' => $request->input('product_discount_percentage'),
             'product_short_description' => $request->input('short_description'),
             'product_description' => $request->input('description'),
             'feature_product' => $request->input('feature_product'),
+            'seo_tags' => $request->input('seo_tags_and_scripts'),
+            'stock' => $request->input('stock'),
             'created_by' => Session::get('admin')->username,
             'status' => $request->input('status')
         ];
@@ -210,17 +214,21 @@ class productController extends Controller
             ]);
         }
     }
-    public function deleteProduct(Request $request, $dID)
+    public function deleteProduct(Request $request, $cId)
     {
-        $product = DB::table('t_products')->where('id', $dID)->first();
+        $deleted = productModel::where('id', $cId)->delete();
 
-        if (!$product) {
-            return redirect()->back()->with('error', 'Product not found');
+        if ($deleted) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product deleted successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Product could not be deleted!'
+            ]);
         }
-
-        DB::table('t_products')->where('id', $dID)->delete();
-
-        return redirect()->route('admin.products')->with('success', 'Product deleted successfully.');
     }
     
     

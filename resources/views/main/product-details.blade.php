@@ -1,4 +1,9 @@
-@extends('main/include/layout')
+@extends('main.include.layout')
+@section('meta')
+    @php
+        echo $product->seo_tags;
+    @endphp
+@endsection
 @section('content')
     <main style="margin-top: 145px;">
         <!-- Breadcrumbs Start -->
@@ -95,14 +100,18 @@
                     <div class="product-single-col-2">
                         <!-- Product Single content Start -->
                         <div class="product-single-content">
-                            <h2 class="product-single-content__title">
+                            <h1 class="product-single-content__title">
                                 {{ $product->product_title }}
-                            </h2>
+                            </h1>
                             <div class="product-single-content__price-stock">
                                 <div class="product-single-content__price">
-                                    <ins>INR <span
-                                            class="text-danger"><strike>{{ $product->product_sale_price }}</strike></span>
-                                        {{ $product->product_price }}</ins>
+                                    ₹
+                                    @if (is_numeric($product->product_price) && is_numeric($product->product_discount_percentage))
+                                        <span style="text-decoration: line-through;" class="text-danger">{{ $product->product_price }}</span>
+                                        <span>{{ $product->product_price - ($product->product_price / 100 * $product->product_discount_percentage) }}</span>
+                                    @else
+                                        <span>{{ $product->product_price }}</span>
+                                    @endif
                                 </div>
                                 <div class="product-single-content__stock">
                                     <span class="stock-icon">
@@ -114,30 +123,31 @@
                                 </div>
                             </div>
 
-                            <div class="product-single-content__add-to-cart-wrapper">
-                                <div class="product-single-content__quantity-add-to-cart">
-                                    <div class="product-single-content__quantity product-quantity">
-                                        <button type="button" class="decrease" aria-label="delete">
-                                            <i class="lastudioicon-i-delete-2"></i>
-                                        </button>
-                                        <input class="quantity-input" type="text" value="01">
-                                        <button type="button" class="increase" aria-label="add">
-                                            <i class="lastudioicon-i-add-2"></i>
+                            @if ($product->stock == 0)
+                                <div class="single-product__stock-status" style="color: red; font-weight: bold; margin-top: 40px; margin-bottom: 40px;">
+                                    Out of Stock
+                                </div>
+                            @else
+                                <div class="product-single-content__add-to-cart-wrapper">
+                                    <div class="product-single-content__quantity-add-to-cart">
+                                        <div class="product-single-content__quantity product-quantity">
+                                            <button type="button" class="decrease" aria-label="delete">
+                                                <i class="lastudioicon-i-delete-2"></i>
+                                            </button>
+                                            <input class="quantity-input" type="text" value="01">
+                                            <button type="button" class="increase" aria-label="add">
+                                                <i class="lastudioicon-i-add-2"></i>
+                                            </button>
+                                        </div>
+                                        <button class="product-single-content__add-to-cart btn add-to-cart"
+                                            data-product-id="{{ $product->product_id }}">
+                                            Add to cart
                                         </button>
                                     </div>
-                                    <button class="product-single-content__add-to-cart btn add-to-cart"
-                                        data-product-id="{{ $product->product_id }}">
-                                        Add to cart
-                                    </button>
                                 </div>
+                            @endif
 
-                                <!-- <a href="#" class="product-add-compare">
-                                                Add to Compare
-                                            </a> -->
-                                <a href="#" class="product-add-wishlist">
-                                    Add to Wishlist
-                                </a>
-                            </div>
+                            
                             <div class="product-single-content__short-description">
                                 <?= $product->product_short_description ?>
                             </div>
@@ -152,32 +162,12 @@
                                         <a href="#">{{ $product->category_name }}</a>
                                     </div>
                                 </div>
-                                <div class="product-single-content__meta--item">
-                                    <div class="label">Tag:</div>
-                                    <div class="content">
-                                        <a href="#">Teen</a>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="product-single-content__social">
-                                <div class="label">Share</div>
-                                <ul class="socail-icon">
-                                    <li>
-                                        <a href="#" aria-label="facebook">
-                                            <i class="lastudioicon-b-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" aria-label="twitter">
-                                            <i class="lastudioicon-b-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" aria-label="linkedin">
-                                            <i class="lastudioicon-b-linkedin"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="button-02 d-inline-block">
+                                <a href="#" data-product-id="{{ $product->product_id }}"
+                                    class="requestBulkRate special-offer-content__btn">
+                                    Bulk Rate Request
+                                </a>
                             </div>
                         </div>
                         <!-- Product Single content End -->
@@ -200,6 +190,11 @@
                                 Description
                             </button>
                         </li>
+                        <li>
+                            <button data-bs-toggle="pill" data-bs-target="#reviews" type="button">
+                                Reviews (03)
+                            </button>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -208,6 +203,103 @@
                                 <?= $product->product_description ?>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="reviews">
+                            <!-- Product Single Review Start -->
+                            <div class="product-single-review">
+                                <!-- Product Comment Start -->
+                                <div class="product-comment">
+                                    <h3 class="comment-title">
+                                        Product Reviews
+                                    </h3>
+
+                                    <!-- Comment Items Start -->
+                                    <ul class="comment-items">
+                                        @forelse($reviews as $review)
+                                            <li class="comment-item">
+                                                <div class="comment-item__author">
+                                                    <img src="{{ url('public/assets/images/user.png') }}" alt="Author" width="90" height="90" loading="lazy" />
+                                                </div>
+                                                <div class="comment-item__content">
+                                                    <div class="comment-item__rating">
+                                                        <span class="star-rating">
+                                                            <span style="width: {{ $review->rating * 20 }}%;"></span>
+                                                        </span>
+                                                    </div>
+                                                    <p class="comment-item__description">
+                                                        {{ $review->review }}
+                                                    </p>
+                                                    <p class="comment-item__meta">
+                                                        <strong>{{ $review->name }}</strong> - {{ \Carbon\Carbon::parse($review->created_at)->format('F j, Y') }}
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        @empty
+                                            <li>No reviews yet. Be the first to review this product!</li>
+                                        @endforelse
+                                    </ul>
+
+                                    <!-- Comment Items End -->
+                                </div>
+                                <!-- Product Comment End -->
+
+                                <!-- Product Comment Form Start -->
+                                <div class="product-comment-form">
+                                    <h3 class="comment-title">
+                                        Add a review
+                                    </h3>
+
+                                    <form id="reviewForm" method="POST">
+                                        @csrf
+                                        <div class="comment-form">
+                                            <div class="product-review-form__rating">
+                                                <div class="label">Your rating *</div>
+                                                <select name="rating" id="rating" class="single-form__input">
+                                                    <option value="">Select rating</option>
+                                                    <option value="1">★☆☆☆☆</option>
+                                                    <option value="2">★★☆☆☆</option>
+                                                    <option value="3">★★★☆☆</option>
+                                                    <option value="4">★★★★☆</option>
+                                                    <option value="5">★★★★★</option>
+                                                </select>
+                                                <div class="error rating_err"></div>
+                                            </div>
+                                    
+                                            <div class="single-form">
+                                                <label class="single-form__label">Your review *</label>
+                                                <textarea class="single-form__input" name="review" id="review" ></textarea>
+                                                <div class="error review_err"></div>
+                                            </div>
+                                    
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="single-form">
+                                                        <label class="single-form__label">Name *</label>
+                                                        <input type="text" name="name" id="name" class="single-form__input"  />
+                                                        <div class="error name_err"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-form">
+                                                        <label class="single-form__label">Email *</label>
+                                                        <input type="email" name="email" id="email" class="single-form__input" />
+                                                        <div class="error email_err"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    
+                                            <input type="hidden" name="product_id" value="{{ $product->product_id }}">
+                                    
+                                            <div class="single-form">
+                                                <button class="single-form__btn btn" type="submit">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <!-- Product Comment Form End -->
+                            </div>
+                            <!-- Product Single Review End -->
+                        </div>
                     </div>
                 </div>
                 <!-- Product Single Tabs End -->
@@ -215,146 +307,245 @@
         </div>
 
         <!-- Related Product Start -->
-<div class="related-product-section section-padding-2">
-    <div class="container-fluid custom-container">
-        <!-- Related Title Start -->
-        <div class="related-title text-center">
-            <h2 class="related-title__title">Related Products</h2>
-        </div>
-        <!-- Related Title End -->
-
-        <!-- Related Product Start -->
-        <div class="related-product-active swiper-dot-style-1">
-            <div class="swiper swiper-initialized swiper-horizontal swiper-pointer-events">
-                <div class="swiper-wrapper" id="swiper-wrapper-b791146510146bd32" aria-live="polite"
-                    style="transition-duration: 0ms; transform: translate3d(-1457px, 0px, 0px);">
-                    
-                    @foreach ($suggestedProduct as $suggest)
-                        <div class="swiper-slide" role="group" aria-label="Product">
-                            <!-- Single product Start -->
-                            <div class="single-product js-scroll ShortFadeInUp scrolled">
-                                <div class="single-product__thumbnail">
-                                    <div class="single-product__thumbnail--meta-3">
-                                        <a href="#" data-bs-tooltip="tooltip" data-bs-placement="top"
-                                            data-bs-title="Add to wishlist" data-bs-custom-class="p-meta-tooltip"
-                                            aria-label="heart"><i class="lastudioicon-heart-2"></i></a>
-                                    </div>
-                                    @if (!empty($suggest->product_sale_price))
-                                            <div class="single-product__thumbnail--badge onsale">
-                                                Sale
-                                            </div>
-                                        @endif
-                                    <div class="single-product__thumbnail--holder">
-                                        <a href="{{ url('product-details/'.$suggest->product_id) }}">
-                                            <img src="{{ url($suggest->product_image) }}" alt="{{ $suggest->product_title }}"
-                                                width="344" height="370" loading="lazy">
-                                        </a>
-                                    </div>
-                                    <div class="single-product__thumbnail--meta-2">
-                                        <a href="#" class="add-to-cart" data-product-id="{{ $suggest->product_id }}" data-bs-tooltip="tooltip" data-bs-placement="top"
-                                            data-bs-title="Add to cart" data-bs-custom-class="p-meta-tooltip"
-                                            aria-label="cart"><i class="lastudioicon-shopping-cart-3"></i></a>
-                                    </div>
-                                </div>
-                                <div class="single-product__info text-center">
-                                    <div class="single-product__info--tags">
-                                        <a href="#">{{ $suggest->category_name }}</a>
-                                    </div>
-                                    <h3 class="single-product__info--title">
-                                        <a href="{{ url('product-details/'.$suggest->product_id) }}">
-                                            {{ $suggest->product_title }}
-                                        </a>
-                                    </h3>
-                                    <div class="single-product__info--price">
-                                        @if (!is_null($suggest->product_sale_price) && $suggest->product_sale_price != '')
-                                            <del>₹ {{ $suggest->product_price }}</del>
-                                            <ins>₹ {{ $suggest->product_sale_price }}</ins>
-                                        @else
-                                            <ins>₹ {{ $suggest->product_price }}</ins>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Single product End -->
-                        </div>
-                    @endforeach
-
+        <div class="related-product-section section-padding-2">
+            <div class="container-fluid custom-container">
+                <!-- Related Title Start -->
+                <div class="related-title text-center">
+                    <h2 class="related-title__title">Related Products</h2>
                 </div>
-            </div>
-        </div>
-        <!-- Related Product End -->
-    </div>
-</div>
+                <!-- Related Title End -->
 
+                <!-- Related Product Start -->
+                <div class="related-product-active swiper-dot-style-1">
+                    <div class="swiper swiper-initialized swiper-horizontal swiper-pointer-events">
+                        <div class="swiper-wrapper" id="swiper-wrapper-b791146510146bd32" aria-live="polite"
+                            style="transition-duration: 0ms; transform: translate3d(-1457px, 0px, 0px);">
 
-        <!-- Related Product End -->
+                            @foreach ($suggestedProduct as $suggest)
+                                <div class="swiper-slide" role="group" aria-label="Product">
+                                    <!-- Single product Start -->
+                                    <div class="single-product js-scroll ShortFadeInUp scrolled">
+                                        <div class="single-product__thumbnail">
+                                            @if (!empty($suggest->product_discount_percentage) && $suggest->product_discount_percentage != '0')
+                                                <div class="single-product__thumbnail--badge onsale">
+                                                    Sale {{ $suggest->product_discount_percentage }}% OFF
+                                                </div>
+                                            @endif
+                                            <div class="single-product__thumbnail--holder">
+                                                <a href="{{ url('product-details/' . $suggest->product_id) }}">
+                                                    <img src="{{ url($suggest->product_image) }}"
+                                                        alt="{{ $suggest->product_title }}" width="344"
+                                                        height="370" loading="lazy">
+                                                </a>
+                                            </div>
+                                            <div class="single-product__thumbnail--meta-2">
+                                                <a href="#" class="add-to-cart"
+                                                    data-product-id="{{ $suggest->product_id }}"
+                                                    data-bs-tooltip="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Add to cart" data-bs-custom-class="p-meta-tooltip"
+                                                    aria-label="cart"><i class="lastudioicon-shopping-cart-3"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="single-product__info text-center">
+                                            <div class="single-product__info--tags">
+                                                <a href="#">{{ $suggest->category_name }}</a>
+                                            </div>
+                                            <h3 class="single-product__info--title">
+                                                <a href="{{ url('product-details/' . $suggest->product_id) }}">
+                                                    {{ Str::limit($suggest->product_title, 40) }}
+                                                </a>
+                                            </h3>
+                                            <div class="single-product__info--price">
+                                                ₹
+                                                @if (is_numeric($suggest->product_price) && is_numeric($suggest->product_discount_percentage))
+                                                    <span style="text-decoration: line-through;" class="text-danger">{{ $suggest->product_price }}</span>
+                                                    <span>{{ $suggest->product_price - ($suggest->product_price / 100 * $suggest->product_discount_percentage) }}</span>
+                                                @else
+                                                    <span>{{ $suggest->product_price }}</span>
+                                                @endif
+                                            </div>
+                                            
+                                            
+                                            @if ($suggest->stock == 0)
+                                                <div class="single-product__stock-status" style="color: red; font-weight: bold; margin-top: 10px;">
+                                                    Out of Stock
+                                                </div>
+                                            @else
+                                                <a href="#" data-product-id="{{ $product->product_id }}"
+                                                    class="add-to-cart special-offer-content__btn">
+                                                    Add to cart
+                                                </a>
+                                            @endif
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- Single product End -->
+                                </div>
+                            @endforeach
 
-        <!-- Newsletter Start -->
-        <!-- Newsletter Start -->
-        <div class="newsletter-section">
-            <div class="newsletter-left" style="background-image: url(assets/images/newsletter-bg-1.jpg)">
-                <!-- Newsletter Wrapper Start -->
-                <div class="newsletter-wrapper text-center">
-                    <h4 class="newsletter-wrapper__title">Follow us on</h4>
-                    <p>
-                        Proin volutpat vitae libero at tincidunt. Maecenas sapien
-                        lectus, vehicula vel euismod sed, vulputate
-                    </p>
-
-                    <div class="newsletter-social">
-                        <ul class="newsletter-social__list">
-                            <li>
-                                <a href="#" aria-label="facebook">
-                                    <i class="lastudioicon-b-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" aria-label="twitter">
-                                    <i class="lastudioicon-b-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" aria-label="instagram">
-                                    <i class="lastudioicon-b-instagram"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" aria-label="vimeo">
-                                    <i class="lastudioicon-b-vimeo"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" aria-label="envato">
-                                    <i class="lastudioicon-envato"></i>
-                                </a>
-                            </li>
-                        </ul>
+                        </div>
                     </div>
                 </div>
-                <!-- Newsletter Wrapper End -->
-            </div>
-            <div class="newsletter-right" style="background-image: url(assets/images/newsletter-bg-2.jpg)">
-                <!-- Newsletter Wrapper Start -->
-                <div class="newsletter-wrapper text-center">
-                    <h4 class="newsletter-wrapper__title">10% off when you sign up</h4>
-                    <p>
-                        Proin volutpat vitae libero at tincidunt. Maecenas sapien
-                        lectus, vehicula vel euismod sed, vulputate
-                    </p>
-                    <form action="#">
-                        <div class="newsletter-form-style-1">
-                            <input type="text" placeholder="Enter your email address...">
-                            <button>Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- Newsletter Wrapper End -->
+                <!-- Related Product End -->
             </div>
         </div>
-        <!-- Newsletter End -->
 
-        <!-- Newsletter End -->
+        <!-- Related Product End -->
     </main>
 
 
+
+    <div class="modal fade" id="requestBulkRateForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-5">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Request for Bulk-Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" id="bulkContactForm">
+                    @csrf
+                    <!-- Single Form Start -->
+                    <input type="hidden" name="product_id" id="product_id" value="" />
+                    <div class="single-form">
+                        <label class="single-form__label">Name*</label>
+                        <input class="single-form__input" name="name" type="text" />
+                        <span class="name_err error"></span>
+                    </div>
+                    <!-- Single Form Start -->
+                    <!-- Single Form Start -->
+                    <div class="single-form">
+                        <label class="single-form__label">Phone Number*</label>
+                        <input class="single-form__input" name="phone" minlength="10" maxlength="14" type="text"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                        <span class="phone_err error"></span>
+                    </div>
+                    <!-- Single Form Start -->
+                    <!-- Single Form Start -->
+                    <div class="single-form">
+                        <label class="single-form__label">Quantity*</label>
+                        <input class="single-form__input" name="quantity" type="number" />
+                        <span class="quantity_err error"></span>
+                    </div>
+                    <!-- Single Form Start -->
+
+
+                    <!-- Single Form Start -->
+                    <div class="single-form">
+                        <button class="single-form__btn btn" id="bulkformbtn" type="submit">
+                            Send Message
+                        </button>
+                    </div>
+                    <!-- Single Form Start -->
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).on('click', '.requestBulkRate', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            var productId = $(this).data('product-id');
+            var quantity = 1;
+
+            $("#requestBulkRateForm").modal("show");
+            $("#product_id").val(productId);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $("#bulkContactForm").submit(function(e) {
+                e.preventDefault();
+                var form = $("#bulkContactForm")[0];
+                var data = new FormData(form);
+                $("#bulkformbtn").prop("disabled", true);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('sendBulkRateEnquiry') }}",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        //alert(data.status);
+                        console.log(data)
+                        if (data.status == 'success') {
+                            Swal.fire({
+                                icon: data.status,
+                                title: data.message
+                            }).then(() => {
+                                // window.location.href = "{{ route('home') }}";
+                            });
+                            $("#requestBulkRateForm").modal("hide");
+                        } else {
+                            Swal.fire({
+                                icon: data.status,
+                                title: data.message
+                            })
+                            printError(data.error)
+                        }
+                        form.reset();
+                        $("#bulkformbtn").prop("disabled", false);
+                    },
+                    error: function(error) {
+                        console.log(error.responseJSON);
+                        $("#bulkformbtn").prop("disabled", false);
+                    }
+                })
+            })
+        })
+
+        $("#reviewForm").submit(function(e) {
+            e.preventDefault();
+            clearError()
+            var form = $("#reviewForm")[0];
+            var data = new FormData(form);
+        
+            $.ajax({
+                type: "POST",
+                url: "{{ route('product.review.submit') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        Swal.fire({
+                            icon: data.status,
+                            title: data.message
+                        }).then(() => {
+                            form.reset();
+                            clearError()
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: data.status,
+                            title: data.message
+                        });
+                        printError(data.errors);
+                    }
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                }
+            });
+        });
+
+        function clearError() {
+            $('.error').text('')
+        }
+
+        function printError(err) {
+            $.each(err, function(key, value) {
+                $("." + key + "_err").text(value)
+            })
+        }
+    </script>
 @endsection

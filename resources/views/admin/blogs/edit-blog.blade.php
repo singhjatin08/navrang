@@ -118,6 +118,14 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="seo_tags_and_scripts">SEO Tags & Scripts</label>
+                            <textarea name="seo_tags_and_scripts" rows="6" class="form-control">{{ $blog->seo_tags }}</textarea>
+                            <div class="seo_tags_and_scripts_err error"></div>
+                        </div>
+                    </div>
+
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
                         <br>

@@ -52,7 +52,7 @@ headerSticky(".header")
 // menu-items-list menu-items-list--dark
 
 /*--
-    Mobile Menu 
+    Mobile Menu
 
     Global Functions
     - Get Sibling
@@ -171,7 +171,9 @@ offCanvasMenu(".navbar-mobile-menu, .slidedown-menu__menu")
 -----------------------------------*/
 var swiper = new Swiper(".slider-active .swiper", {
     parallax: true,
+    autoplay: true,
     effect: "fade",
+    autoplay:true,
     loop: true,
     speed: 1200,
 
@@ -190,7 +192,7 @@ var swiper = new Swiper(".slider-active .swiper", {
 })
 
 /*--
-    Features Text 
+    Features Text
 -----------------------------------*/
 var swiper = new Swiper(".features-text .swiper", {
     // slidesPerView: 2,
@@ -209,7 +211,7 @@ var swiper = new Swiper(".features-text .swiper", {
 })
 
 /*--
-    Brand 
+    Brand
 -----------------------------------*/
 var swiper = new Swiper(".brand-active .swiper", {
     loop: true,
@@ -248,23 +250,23 @@ var swiper = new Swiper(".product-active .swiper", {
     // Breakpoints
     breakpoints: {
         0: {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 20,
         },
         576: {
-            slidesPerView: 2,
+            slidesPerView: 3,
             spaceBetween: 20,
         },
         768: {
-            slidesPerView: 3,
+            slidesPerView: 4,
             spaceBetween: 20,
         },
         992: {
-            slidesPerView: 3,
+            slidesPerView: 5,
             spaceBetween: 20,
         },
         1200: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 30,
         },
     },
@@ -702,7 +704,7 @@ var swiper = new Swiper(".related-product-active .swiper", {
     // Breakpoints
     breakpoints: {
         0: {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 10,
         },
         768: {
@@ -710,11 +712,11 @@ var swiper = new Swiper(".related-product-active .swiper", {
             spaceBetween: 16,
         },
         992: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 16,
         },
         1200: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 16,
         },
     },
@@ -797,7 +799,7 @@ const productQuantity = (selector) => {
 productQuantity(".product-quantity")
 
 /*--
-    Product Single Carousel 
+    Product Single Carousel
 -----------------------------------*/
 var swiper = new Swiper(".product-single-carousel .swiper", {
     loop: true,
@@ -933,7 +935,7 @@ const checkoutShipping = (selector) => {
 checkoutShipping(".checkout-shipping")
 
 /*--
-    Quick View Slides 
+    Quick View Slides
 -----------------------------------*/
 const QuickViewProduct = new Swiper(".quick-view-product-slide .swiper", {
     spaceBetween: 0,
@@ -1036,26 +1038,31 @@ function loadCart1() {
         url: APP_URL + "/getCart",
         success: function (data) {
             if (data.status) {
-                var cart = $('ul.offcanvas-cart-list').html('');
-                var totalAmount = 0;
+                const cart = $('ul.offcanvas-cart-list').html('');
+                let totalAmount = 0;
 
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
-                        var subtotal = price * product.quantity;
-                        totalAmount += subtotal; // Add to total
+                        // Calculate discounted price
+                        let price = parseFloat(product.product_price);
+                        if (product.product_discount_percentage) {
+                            price = price - (price * product.product_discount_percentage / 100);
+                        }
 
-                        var item = `
+                        const subtotal = price * product.quantity;
+                        totalAmount += subtotal;
+
+                        const item = `
                             <li>
                                 <div class="offcanvas-cart-item">
                                     <div class="offcanvas-cart-item__thumbnail">
-                                        <a href="#">
+                                        <a href="${APP_URL}/product-details/${product.product_id}">
                                             <img src="${APP_URL}/${product.product_image}" width="70" height="84" alt="product" />
                                         </a>
                                     </div>
                                     <div class="offcanvas-cart-item__content">
                                         <h4 class="offcanvas-cart-item__title">
-                                            <a href="#">${product.product_title}</a>
+                                            <a href="${APP_URL}/product-details/${product.product_id}">${product.product_title}</a>
                                         </h4>
                                         <span class="offcanvas-cart-item__quantity">
                                             ${product.quantity} × ₹ ${price.toFixed(2)}
@@ -1067,26 +1074,27 @@ function loadCart1() {
                                 </div>
                             </li>
                         `;
-                        $("#cartCount").html(data.count);
+
+                        $(".badge.cartCount").html(data.count);
                         cart.append(item);
                     });
                 } else {
-                    var item = `
+                    const item = `
                         <li>
                             <div class="text-center">
-                                <p>No products in cart.<p>
+                                <p>No products in cart.</p>
                                 <br>
-                                <a href="http://localhost/navrang/shop" class="btn-theme-1">Shop Now</a>
+                                <a href="${APP_URL}/shop" class="btn-theme-1">Shop Now</a>
                             </div>
                         </li>
                     `;
-                    $("#cartCount").html(data.count);
+                    $(".badge.cartCount").html(data.count);
                     cart.append(item);
                 }
 
-                // Calculate tax (example: 10% GST)
-                var taxAmount = totalAmount * 0.10;
-                var grandTotal = totalAmount + taxAmount;
+                // Calculate tax (example: 12% GST)
+                const taxAmount = totalAmount * 0.12;
+                const grandTotal = totalAmount + taxAmount;
 
                 // Update Cart Totals
                 $('.cart-totals-table').html(`
@@ -1097,9 +1105,9 @@ function loadCart1() {
                                 <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
                             </tr>
                             <tr>
-                                <th>Taxes & GST (10%)</th>
+                                <th>Taxes & GST (12%)</th>
                                 <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
-                            </tr>                            
+                            </tr>
                             <tr class="order-total">
                                 <th>Total</th>
                                 <td><strong>₹ ${grandTotal.toFixed(2)}</strong></td>
@@ -1108,7 +1116,11 @@ function loadCart1() {
                     </table>
                 `);
             } else {
-                $('ul.offcanvas-cart-list').html('<li><div class="text-center">No products in the cart</div></li>');
+                $('ul.offcanvas-cart-list').html(`
+                    <li>
+                        <div class="text-center">No products in the cart</div>
+                    </li>
+                `);
                 $('.cart-totals-table').html(`
                     <table class="table">
                         <tbody>
@@ -1130,52 +1142,72 @@ function loadCart1() {
             }
         },
         error: function () {
-            $('ul.offcanvas-cart-list').html('<li><div class="text-center">Error loading cart</div></li>');
+            $('ul.offcanvas-cart-list').html(`
+                <li>
+                    <div class="text-center">Error loading cart</div>
+                </li>
+            `);
         }
     });
 }
 
-loadCart1();
 
+loadCart1();
 
 function loadCart() {
     $.ajax({
         type: "GET",
         url: APP_URL + "/getCart",
         success: function (data) {
+            console.log(data);
+
             if (data.status) {
-                var table = $('#cartList');
-                var tableBody = table.find('tbody').html('');
-                var totalAmount = 0;
+                const table = $('#cartList');
+                const tableBody = table.find('tbody').html('');
+                let totalAmount = 0;
 
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
-                        var subtotal = price * product.quantity;
-                        totalAmount += subtotal; // Add to total
+                        // Calculate discounted price
+                        let price = parseFloat(product.product_price);
+                        if (product.product_discount_percentage) {
+                            price = price - (price * product.product_discount_percentage / 100);
+                        }
 
-                        var row = `
+                        // Calculate subtotal for product
+                        const subtotal = price * product.quantity;
+                        totalAmount += subtotal;
+
+                        // Format prices to 2 decimal places
+                        const formattedOriginalPrice = parseFloat(product.product_price).toFixed(2);
+                        const formattedDiscountedPrice = price.toFixed(2);
+
+                        const row = `
                             <tr class="cart-item">
                                 <td class="cart-product-remove">
                                     <a data-product-id="${product.product_id}" href="#" class="remove">×</a>
                                 </td>
-    
+
                                 <td class="cart-product-thumbnail">
-                                    <a href="product-single.html">
+                                    <a href="${APP_URL}/product-details/${product.product_id}">
                                         <img src="${product.product_image}" alt="Product" width="70" height="89">
                                     </a>
                                 </td>
-    
+
                                 <td class="cart-product-name">
-                                    <a href="product-single.html">${product.product_title}</a>
+                                    <a href="#">${product.product_title.slice(0, 30)}...</a>
                                 </td>
-    
+
                                 <td class="cart-product-price text-md-center" data-title="Price">
                                     <span class="price-amount">
-                                        <ins>₹ ${product.product_sale_price ? `<strike>${product.product_price}</strike> ${product.product_sale_price}` : product.product_price}</ins>
+                                        <ins>
+                                            ₹ ${product.product_discount_percentage 
+                                                ? `<strike>₹${formattedOriginalPrice}</strike> ₹${formattedDiscountedPrice}` 
+                                                : `₹${formattedOriginalPrice}`}
+                                        </ins>
                                     </span>
                                 </td>
-    
+
                                 <td class="cart-product-quantity text-md-center" data-title="Quantity">
                                     <div class="cart-table__quantity product-quantity">
                                         <button type="button" class="decrease-cart" data-product-id="${product.product_id}" aria-label="delete">
@@ -1189,34 +1221,33 @@ function loadCart() {
                                         </button>
                                     </div>
                                 </td>
-    
+
                                 <td class="cart-product-subtotal text-md-center" data-title="Subtotal">
-                                    <span class="price-amount">
-                                        ₹${subtotal.toFixed(2)}
-                                    </span>
+                                    <span class="price-amount">₹${subtotal.toFixed(2)}</span>
                                 </td>
                             </tr>
                         `;
-                        $("#cartCount").html(data.count);
+
+                        $(".badge.cartCount").html(data.count);
                         tableBody.append(row);
                     });
                 } else {
-                    var row = `
+                    const row = `
                         <tr>
                             <td colspan="6" class="text-center">
                                 No products in cart.
                                 <br>
-                                <a href="https://www.devtechera.com/projects/navrang/shop" class="btn-theme-1">Shop Now</a>
+                                <a href="https://www.navrangaromacandles.com/" class="btn-theme-1">Shop Now</a>
                             </td>
                         </tr>
                     `;
-                    $("#cartCount").html(data.count);
+                    $(".badge.cartCount").html(data.count);
                     tableBody.append(row);
                 }
 
-                // Calculate tax (example: 10% GST)
-                var taxAmount = totalAmount * 0.10;
-                var grandTotal = totalAmount + taxAmount;
+                // Calculate tax (example: 12% GST)
+                const taxAmount = totalAmount * 0.12;
+                const grandTotal = totalAmount + taxAmount;
 
                 // Update Cart Totals
                 $('.cart-totals__table').html(`
@@ -1227,7 +1258,7 @@ function loadCart() {
                                 <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
                             </tr>
                             <tr>
-                                <th>Taxes & GST (10%)</th>
+                                <th>Taxes & GST (12%)</th>
                                 <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
                             </tr>
                             <tr class="order-total">
@@ -1237,10 +1268,10 @@ function loadCart() {
                         </tbody>
                     </table>
                 `);
-
             } else {
                 $('#cartList tbody').html(
-                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>');
+                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>'
+                );
                 $('.cart-totals__table').html(`
                     <table class="table">
                         <tbody>
@@ -1263,32 +1294,39 @@ function loadCart() {
         },
         error: function () {
             $('#cartList tbody').html(
-                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>');
+                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>'
+            );
         }
     });
 }
 
+
 loadCart();
+
 function checkoutCart() {
     $.ajax({
         type: "GET",
         url: APP_URL + "/getCart",
         success: function (data) {
             if (data.status) {
-                var table = $('table.checkout-product-list');
-                var tableBody = table.find('tbody').html('');
-                var totalAmount = 0;
+                const table = $('table.checkout-product-list');
+                const tableBody = table.find('tbody').html('');
+                let totalAmount = 0;
 
                 if (data.data.length !== 0) {
                     data.data.forEach(function (product) {
-                        var price = product.product_sale_price ? parseFloat(product.product_sale_price) : parseFloat(product.product_price);
-                        var subtotal = price * product.quantity;
-                        totalAmount += subtotal; // Add to total
+                        let price = parseFloat(product.product_price);
+                        if (product.product_discount_percentage) {
+                            price = price - (price * product.product_discount_percentage / 100);
+                        }
 
-                        var row = `
+                        const subtotal = price * product.quantity;
+                        totalAmount += subtotal;
+
+                        const row = `
                             <tr class="cart-item">
                                 <td class="product-name">
-                                    ${product.product_title}
+                                    ${product.product_title.slice(0, 20)}...
                                     <strong>×&nbsp;${product.quantity}</strong>
                                 </td>
                                 <td class="product-total">
@@ -1299,12 +1337,12 @@ function checkoutCart() {
                         tableBody.append(row);
                     });
                 } else {
-                    var row = `
+                    const row = `
                         <tr>
                             <td colspan="6" class="text-center">
                                 No products in cart.
                                 <br>
-                                <a href="https://www.devtechera.com/projects/navrang/shop" class="btn-theme-1">Shop Now</a>
+                                <a href="${APP_URL}/shop" class="btn-theme-1">Shop Now</a>
                             </td>
                         </tr>
                     `;
@@ -1312,14 +1350,19 @@ function checkoutCart() {
                 }
 
                 // Fixed Shipping Charges
-                var shippingCharges = 50;
-                var grandTotal = totalAmount + shippingCharges;
+                const shippingCharges = 0;
+                const taxAmount = totalAmount * 0.12; // 12% GST
+                const grandTotal = totalAmount + taxAmount + shippingCharges;
 
                 // Update Cart Totals
                 $('#checkout-totals-table').html(`
                     <tr class="cart-subtotal">
                         <td>Subtotal</td>
                         <td><span>₹ ${totalAmount.toFixed(2)}</span></td>
+                    </tr>
+                    <tr class="cart-shipping">
+                        <td>Taxes & GST (12%)</td>
+                        <td><span>₹ ${taxAmount.toFixed(2)}</span></td>
                     </tr>
                     <tr class="cart-shipping">
                         <td>Shipping Charges</td>
@@ -1333,12 +1376,18 @@ function checkoutCart() {
                     </tr>
                 `);
             } else {
-                $('table.checkout-product-list tbody').html(
-                    '<tr><td colspan="6" class="text-center">No products in the cart</td></tr>'
-                );
+                $('table.checkout-product-list tbody').html(`
+                    <tr>
+                        <td colspan="6" class="text-center">No products in the cart</td>
+                    </tr>
+                `);
                 $('#checkout-totals-table').html(`
                     <tr>
                         <th>Subtotal</th>
+                        <td><span>₹ 0.00</span></td>
+                    </tr>
+                    <tr>
+                        <th>Taxes & GST</th>
                         <td><span>₹ 0.00</span></td>
                     </tr>
                     <tr>
@@ -1353,12 +1402,15 @@ function checkoutCart() {
             }
         },
         error: function () {
-            $('table.checkout-product-list tbody').html(
-                '<tr><td colspan="6" class="text-center">Error loading cart</td></tr>'
-            );
+            $('table.checkout-product-list tbody').html(`
+                <tr>
+                    <td colspan="6" class="text-center">Error loading cart</td>
+                </tr>
+            `);
         }
     });
 }
+
 
 checkoutCart();
 
@@ -1393,7 +1445,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.error(error);
-                alert('Something went wrong!');
+                alert(response);
             }
         });
     });

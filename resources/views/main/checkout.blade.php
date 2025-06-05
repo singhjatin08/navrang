@@ -1,4 +1,10 @@
 @extends('main.include.layout')
+@section('meta')
+    @php
+        echo $meta->head_scripts;
+    @endphp
+    <title>Checkout - Navrangaroma Candles</title>
+@endsection
 @section('content')
     <div>
         <!-- Breadcrumb Start -->
@@ -20,133 +26,6 @@
             <div class="container-fluid custom-container">
                 <!-- Checkout Start -->
                 <div class="checkout-wrapper">
-                    <div class="row gy-3">
-                        <div class="col-lg-6">
-                            <!-- Checkout Info Start -->
-                            <div class="checkout-info">
-                                <div class="checkout-info__title">
-                                    {{-- <img src="assets/images/icon/coupon.svg" alt="Coupon" /> --}}
-                                    Have a coupon?
-                                    <button type="button" data-bs-toggle="collapse" data-bs-target="#coupon">
-                                        Click here to enter your code
-                                    </button>
-                                </div>
-                                <div class="collapse" id="coupon">
-                                    <div class="checkout-info__body">
-                                        <p>
-                                            If you have a coupon code,
-                                            please apply it below.
-                                        </p>
-                                        <form action="#">
-                                            <div class="checkout-coupon-form single-form">
-                                                <input class="single-form__input" type="text"
-                                                    placeholder="Coupon code" />
-                                                <button class="single-form__btn btn" class="single">
-                                                    Apply coupon
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Checkout Info End -->
-                        </div>
-                        <div class="col-lg-6">
-                            <!-- Checkout Info Start -->
-                            <div class="checkout-info">
-                                <div class="checkout-info__title">
-                                    {{-- <i class="lastudioicon-single-01-2"></i> --}}
-                                    Returning customer?
-                                    <button type="button" data-bs-toggle="collapse" data-bs-target="#login">
-                                        Click here to login
-                                    </button>
-                                </div>
-                                <div class="collapse" id="login">
-                                    <div class="checkout-info__body">
-                                        <p>
-                                            If you have shopped with us
-                                            before, please enter your
-                                            details below. If you are a new
-                                            customer, please proceed to the
-                                            Billing section.
-                                        </p>
-                                        <form action="#">
-                                            <!-- Login Form End -->
-                                            <div class="checkout-login-form">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="single-form">
-                                                            <label class="single-form__label">Username or
-                                                                email
-                                                                *</label>
-                                                            <input class="single-form__input" type="text"
-                                                                placeholder="Coupon code" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="single-form">
-                                                            <label class="single-form__label">Password
-                                                                *</label>
-                                                            <input class="single-form__input" type="text"
-                                                                placeholder="Coupon code" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <p>
-                                                    Login with your Social
-                                                    ID
-                                                </p>
-                                                <ul class="login-register__social">
-                                                    <li>
-                                                        <a class="social-facebook" href="#">
-                                                            <span class="social-icon">
-                                                                <img src="public/assets/images/facebook.svg"
-                                                                    alt="Facebook" />
-                                                            </span>
-                                                            <span class="social-text">
-                                                                Login with
-                                                                Facebook
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="social-google" href="#">
-                                                            <span class="social-icon">
-                                                                <img src="public/assets/images/google.svg" alt="Facebook" />
-                                                            </span>
-                                                            <span class="social-text">
-                                                                Login with
-                                                                Google
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-
-                                                <!-- Single Form Start -->
-                                                <div class="single-form">
-                                                    <input class="single-form__input" type="checkbox" id="remember" />
-                                                    <label for="remember"
-                                                        class="single-form__label checkbox-label"><span></span>
-                                                        Remember me</label>
-                                                </div>
-                                                <!-- Single Form Start -->
-                                                <!-- Single Form Start -->
-                                                <div class="single-form">
-                                                    <button class="single-form__btn btn">
-                                                        Log In
-                                                    </button>
-                                                </div>
-                                                <!-- Single Form Start -->
-                                            </div>
-                                            <!-- Login Form End -->
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Checkout Info End -->
-                        </div>
-                    </div>
 
                     <form method="post" id="OrderProcessForm">
                         {{-- @csrf --}}
@@ -197,7 +76,7 @@
                                             <label class="single-form__label">Street address *</label>
                                             <input class="single-form__input" name="billing_address" type="text"
                                                 placeholder="House number, Apartment, suite, unit, etc." />
-                                                <div class="error billing_address_err"></div>
+                                            <div class="error billing_address_err"></div>
                                         </div>
                                         <!-- Single Form End -->
                                         <!-- Single Form Start -->
@@ -274,8 +153,7 @@
                                             <!-- Single Form Start -->
                                             <div class="single-form">
                                                 <label class="single-form__label">Country / Region *</label>
-                                                <select name="shipping_country"
-                                                    class="single-form__select select2">
+                                                <select name="shipping_country" class="single-form__select select2">
                                                     <option value="">
                                                         Select a country /
                                                         region…
@@ -342,8 +220,7 @@
                                             <!-- Single Form Start -->
                                             <div class="single-form">
                                                 <label class="single-form__label">Postcode *</label>
-                                                <input class="single-form__input" name="shipping_postcode"
-                                                    type="text" />
+                                                <input class="single-form__input" name="shipping_postcode" type="text" />
                                             </div>
                                             <!-- Single Form End -->
                                         </div>
@@ -388,9 +265,15 @@
 
 
                                         <div class="checkout-details__payment-method">
-                                            <p><input type="radio" name="payment_method" value="Cash On Deliery"> Cash on Delivery</p>
-                                            <p><input type="radio" name="payment_method" value="Bank Transfer"> Bank Transfer</p>
+                                            <p><input type="radio" name="payment_method" value="Cash On Deliery"> Cash
+                                                on Delivery</p>
+                                            {{-- <p><input type="radio" name="payment_method" value="Bank Transfer"> Bank
+                                                Transfer</p> --}}
+                                            <p><input type="radio" name="payment_method" checked value="Razorpay"> Pay
+                                                Now</p>
                                             <div class="error payment_method_err"></div>
+
+
                                         </div>
 
                                         <div class="checkout-details__privacy-policy">
@@ -472,68 +355,159 @@
                         Proin volutpat vitae libero at tincidunt. Maecenas sapien
                         lectus, vehicula vel euismod sed, vulputate
                     </p>
-                    <form action="#">
+                    <form action="#" class="subscribeForm">
                         <div class="newsletter-form-style-1">
                             <input type="text" placeholder="Enter your email address..." />
                             <button>Subscribe</button>
                         </div>
                     </form>
+                    <div class="error email_err"></div>
                 </div>
                 <!-- Newsletter Wrapper End -->
             </div>
         </div>
         <!-- Newsletter End -->
-
-        <!-- Newsletter End -->
     </div>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        $("#OrderProcessForm").submit(function(e) {
+        $("#OrderProcessForm").submit(function (e) {
             e.preventDefault();
             var form = $("#OrderProcessForm")[0];
             var data = new FormData(form);
             $("#submitBtn").prop("disabled", true);
+
             $.ajax({
                 type: "POST",
                 url: "{{ route('orderProcess') }}",
                 data: data,
                 processData: false,
                 contentType: false,
-                success: function(data) {
-                    //alert(data.status);
-                    console.log(data)
-                    if (data.status == 'success') {
-                        Swal.fire({
-                            icon: data.status,
-                            title: data.message
-                        }).then(() => {
-                            window.location.href = "{{ route('home') }}";
-                        });
+                success: function (resp) {
+                    console.log(resp);
+
+                    if (resp.status == 'success') {
+                        if (resp.method == 'razorpay') {
+                            var options = {
+                                "key": "{{ env('RAZORPAY_KEY') }}",
+                                "amount": resp.total * 100,
+                                "currency": "INR",
+                                "name": "Your Store Name",
+                                "description": "Order Payment",
+                                "order_id": resp.razorpay_order_id,
+                                "handler": function (response) {
+                                    // Success handler - Send payment response to backend for verification
+                                    $.post("{{ route('razorpay.verify') }}", {
+                                        _token: $('meta[name="csrf-token"]').attr(
+                                            'content'),
+                                        razorpay_payment_id: response
+                                            .razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature,
+                                    }, function (verifyResponse) {
+                                        if (verifyResponse.status == 'success') {
+                                            // Payment verification successful
+                                            console.log(verifyResponse);
+                                            data.append("razorpay_payment_id", response
+                                                .razorpay_payment_id);
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "{{ route('razorpayCreateOrder') }}",
+                                                data: data,
+                                                processData: false,
+                                                contentType: false,
+                                                success: function (res) {
+                                                    Swal.fire({
+                                                        icon: res
+                                                            .status,
+                                                        title: res
+                                                            .message
+                                                    }).then(() => {
+                                                        window
+                                                            .location
+                                                            .href =
+                                                            "{{ route('my-account') }}";
+                                                    });
+                                                },
+                                                error: function (error) {
+                                                    Swal.fire({
+                                                        icon: res
+                                                            .status,
+                                                        title: res
+                                                            .message
+                                                    });
+                                                    printError(res.error);
+                                                }
+                                            });
+                                        } else {
+                                            // Payment verification failed
+                                            console.log(verifyResponse);
+
+                                            Swal.fire({
+                                                icon: res.status,
+                                                title: res.message
+                                            });
+                                        }
+
+                                    });
+                                },
+                                "prefill": {
+                                    "name": resp.name,
+                                    "email": resp.email,
+                                    "contact": resp.phone
+                                },
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+
+                            var rzp = new Razorpay(options);
+
+                            // Handle payment failure
+                            rzp.on('payment.failed', function (response) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: "Payment Failed",
+                                    text: response.error.description ||
+                                        "Something went wrong. Please try again."
+                                });
+                                $("#submitBtn").prop("disabled", false);
+                            });
+
+                            rzp.open();
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Payment Successful",
+                                text: "Your order has been placed!"
+                            }).then(() => {
+                                window.location.href = "{{ route('home') }}";
+                            });
+                        }
+
                     } else {
                         Swal.fire({
-                            icon: data.status,
-                            title: data.message
-                        })
-                        printError(data.error)
+                            icon: resp.status,
+                            title: resp.message
+                        });
+                        printError(resp.error);
                     }
-                    $("#submitBtn").prop("disabled", false);
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error.responseJSON);
                     $("#submitBtn").prop("disabled", false);
                 }
-            })
-        })
+            });
+        });
 
         function printError(err) {
             $('.error').text('');
-            $.each(err, function(key, value) {
+            $.each(err, function (key, value) {
                 $("." + key + "_err").text(value)
             })
         }

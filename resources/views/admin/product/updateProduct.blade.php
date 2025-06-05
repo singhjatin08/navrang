@@ -66,10 +66,10 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="sale_price">Sale Price</label>
-                                            <input type="text" name="sale_price" id="sale_price" class="form-control"
-                                                value="{{ $product->product_sale_price }}">
-                                            <div class="sale_price_err error"></div>
+                                            <label for="product_discount_percentage">Product Discount Percentage</label>
+                                            <input type="text" name="product_discount_percentage" id="product_discount_percentage" class="form-control" max="100" min="0" 
+                                                value="{{ $product->product_discount_percentage }}">
+                                            <div class="product_discount_percentage_err error"></div>
                                         </div>
                                     </div>
 
@@ -86,6 +86,14 @@
                                             <label for="description">Description</label>
                                             <textarea id="description" name="description" class="form-control">{{ $product->product_description }}</textarea>
                                             <div class="description_err error"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="seo_tags_and_scripts">SEO Tags & Scripts</label>
+                                            <textarea name="seo_tags_and_scripts" rows="6" class="form-control">{{ $product->seo_tags }}</textarea>
+                                            <div class="seo_tags_and_scripts_err error"></div>
                                         </div>
                                     </div>
 
@@ -144,6 +152,21 @@
                                             <div class="error feature_product_err"></div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label for="stock">In Stock</label>
+                                            <br>
+                                            <span class="d-inline-block mx-2">
+                                                <input type="radio" @if ($product->stock == 1) checked @endif name="stock" value="1" class="mr-2"> Yes
+                                            </span>
+                                            <span class="d-inline-block mx-2">
+                                                <input type="radio" @if ($product->stock == 0) checked @endif name="stock" value="0" class="mr-2"> No
+                                            </span>
+                                            <div class="error status_err"></div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="col-md-12">
                                         <div class="form-group">

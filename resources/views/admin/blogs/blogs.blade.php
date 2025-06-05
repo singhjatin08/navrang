@@ -19,7 +19,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 mb-3">
-                <a href="{{ route('admin.addBlog') }}" class="float-right btn btn-brown"><i class="fas fa-add mr-2"></i> Add Blog</a>
+                <a href="{{ route('admin.addBlog') }}" class="float-right btn btn-brown"><i class="fas fa-add mr-2"></i> Add
+                    Blog</a>
             </div>
         </div>
         <div class="card card-outline-brown">
@@ -72,7 +73,9 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.editBlog, $blog->id) }}" class="btn btn-sm btn-light border border-primary text-primary"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('admin.blog.edit', $blog->id) }}"
+                                        class="btn btn-sm btn-light border border-primary text-primary"><i
+                                            class="fas fa-edit"></i></a>
                                 </td>
                             </tr>
                         @endforeach

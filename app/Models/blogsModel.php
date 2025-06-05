@@ -18,6 +18,7 @@ class blogsModel extends Model
         'tags',
         'author',
         'feature_image',
+        'seo_tags',
         'status',
     ];
     protected $dates = [

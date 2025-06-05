@@ -1,4 +1,10 @@
 @extends('main.include.layout')
+@section('meta')
+    @php
+        echo $meta->head_scripts;
+    @endphp
+    <title>My Account - Navrangaroma Candles</title>
+@endsection
 @section('content')
 
     <div style="margin-top: 145px;">
@@ -54,13 +60,13 @@
                                         <a href="{{ route('logout') }}">Log out</a>)
                                     </p>
                                     {{-- <p>
-                                From your account dashboard you can view
-                                your <a href="#">recent orders</a>,
-                                manage your
-                                <a href="#">shipping and billing addresses</a>, and
-                                <a href="#">edit your password and account
-                                    details</a>.
-                            </p> --}}
+                                        From your account dashboard you can view
+                                        your <a href="#">recent orders</a>,
+                                        manage your
+                                        <a href="#">shipping and billing addresses</a>, and
+                                        <a href="#">edit your password and account
+                                            details</a>.
+                                    </p> --}}
 
                                     <table class="table">
                                         <tr>
@@ -120,8 +126,8 @@
                                                         <td>
                                                             @foreach ($order->items as $item)
                                                                 <span>
-                                                                    <img src="{{ url($item->product_image) }}"
-                                                                        width="40" alt="Product Image">
+                                                                    <img src="{{ url($item->product_image) }}" width="40"
+                                                                        alt="Product Image">
                                                                 </span>
                                                             @endforeach
                                                         </td>
@@ -138,7 +144,7 @@
                                                             for {{ count($order->items) }} items
                                                         </td>
                                                         <td>
-                                                            <a class="btn" href="{{ route('view-order',$order->order_id) }}">
+                                                            <a class="btn" href="{{ route('view-order', $order->order_id) }}">
                                                                 View
                                                             </a>
                                                         </td>

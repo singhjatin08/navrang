@@ -46,7 +46,7 @@
                     </div>
                     <!-- Feature Image -->
                     <div class="form-group mb-3">
-                        <label for="banner_image">Feature Image</label>
+                        <label for="banner_image">Banner Image (Recommend: 1920 X 781 Pixels)</label>
                         <div class="input-group">
                             <input type="file" class="form-control" accept="image/*" id="banner_image"
                                 name="banner_image">
